@@ -1,9 +1,9 @@
 public class Drink {
     private String name;
-    private double price;
+    private int price;
     private String imagePath;
     private int stock;
-    public Drink(String name, double price, String imagePath) {
+    public Drink(String name, int price, String imagePath) {
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;
@@ -15,10 +15,10 @@ public class Drink {
     public void setName(String name) {
         this.name = name;
     }
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
     public String getImagePath() {

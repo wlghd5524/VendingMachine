@@ -30,7 +30,10 @@ public class Drink {
     public int getStock() {
         return stock;
     }
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void increaseStock() {
+        stock++;
+    }
+    public void decreaseStock() {
+        stock--;
     }
 }

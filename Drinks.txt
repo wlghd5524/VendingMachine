@@ -1,0 +1,6 @@
+물 450 10 image/water.png
+커피 500 10 image/coffee.png
+이온음료 550 10 image/sports drink.png
+고급커피 700 10 image/premium coffee.png
+탄산음료 750 10 image/soda.png
+특화음료 800 10 image/special drink.png

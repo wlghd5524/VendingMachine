@@ -3,11 +3,11 @@ public class Drink {
     private int price;
     private String imagePath;
     private int stock;
-    public Drink(String name, int price, String imagePath) {
+    public Drink(String name, int price, int stock, String imagePath) {
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;
-        this.stock = 10;
+        this.stock = stock;
     }
     public String getName() {
         return name;

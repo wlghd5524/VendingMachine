@@ -1,44 +1,70 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Frame extends JFrame {
     private int currentMoney = 0;
-    private JLabel currentMoneyLabel;
+    private final JLabel currentMoneyLabel;
     private int pressLogoCount = 0;
-
-    private JButton[] canBuyButtons = new JButton[6];
-    private JButton[] canNotBuyButtons = new JButton[6];
+    private final JButton[] canBuyButtons = new JButton[6];
+    private final JButton[] canNotBuyButtons = new JButton[6];
+    private static String password;
 
     public Frame() throws IOException {
         setTitle("Vending Machine");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 1100);
 
-
         getContentPane().setBackground(new Color(252, 255, 216));
         setLayout(null);
 
-        DrinkList.drinks.add(new Drink("삼다수", 450, "image/water.png"));
-        DrinkList.drinks.add(new Drink("조지아", 500, "image/coffee.png"));
-        DrinkList.drinks.add(new Drink("2%", 550, "image/sportsDrink.png"));
-        DrinkList.drinks.add(new Drink("TOP", 700, "image/premiumCoffee.png"));
-        DrinkList.drinks.add(new Drink("콜라", 750, "image/soda.png"));
-        DrinkList.drinks.add(new Drink("몬스터", 800, "image/specialDrink.png"));
+        //비밀번호 불러오기
+        try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                password = line;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        MoneyList.moneyList.add(new Money("10원", 10, 10));
-        MoneyList.moneyList.add(new Money("50원", 50, 10));
-        MoneyList.moneyList.add(new Money("100원", 100, 10));
-        MoneyList.moneyList.add(new Money("500원", 500, 10));
-        MoneyList.moneyList.add(new Money("1000원", 1000, 10));
+        //음료 정보 불러오기
+        try (BufferedReader br = new BufferedReader(new FileReader("Drinks.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] temp = line.split(" ");
+                DrinkList.drinks.add(new Drink(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), temp[3]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        //구매 패널
+        //거스름돈 정보 불러오기
+        try (BufferedReader br = new BufferedReader(new FileReader("Money.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] temp = line.split(" ");
+                MoneyList.moneyList.add(new Money(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //판매 패널
         JPanel buyPanel = new JPanel();
         buyPanel.setLayout(null);
         buyPanel.setSize(1100, 1100);
         buyPanel.setBackground(new Color(252, 255, 216));
         add(buyPanel);
+
+        //관리자 로그인 패널
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(null);
+        loginPanel.setBackground(new Color(252, 255, 216));
+        loginPanel.setSize(1100, 1100);
+        add(loginPanel);
+        loginPanel.setVisible(false);
 
 
         //관리자 패널
@@ -73,10 +99,35 @@ public class Frame extends JFrame {
             if (pressLogoCount == 5) {
                 pressLogoCount = 0;
                 buyPanel.setVisible(false);
-                adminPanel.setVisible(true);
+                loginPanel.setVisible(true);
             }
         });
         buyPanel.add(logoButton);
+
+
+        //로그인 화면
+        JPasswordField passwordField = new JPasswordField();
+        JButton adminCheckButton = new JButton("확인");
+        passwordField.setBounds(350, 400, 400, 100);
+        adminCheckButton.setBounds(350, 500, 400, 100);
+        passwordField.setFont(buttonFont);
+        adminCheckButton.setFont(buttonFont);
+        JLabel incorrectPasswordLabel = new JLabel("비밀번호가 알맞지 않습니다.");
+        incorrectPasswordLabel.setFont(buttonFont);
+        incorrectPasswordLabel.setBounds(340, 300, 500, 100);
+        incorrectPasswordLabel.setVisible(false);
+        loginPanel.add(incorrectPasswordLabel);
+        adminCheckButton.addActionListener(e -> {
+            if (passwordField.getText().equals(password)) {
+                loginPanel.setVisible(false);
+                adminPanel.setVisible(true);
+            }
+            else {
+                incorrectPasswordLabel.setVisible(true);
+            }
+        });
+        loginPanel.add(adminCheckButton);
+        loginPanel.add(passwordField);
 
 
         //물 이미지 불러오기
@@ -285,7 +336,9 @@ public class Frame extends JFrame {
         buyPanel.add(returnButton);
         returnButton.addActionListener(e -> {
             currentMoney = 0;
+            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
 
+            updateBuyButton();
         });
 
         setVisible(true);
@@ -295,6 +348,32 @@ public class Frame extends JFrame {
     private void updateBuyButton() {
         for (int i = 0; i < 6; i++) {
             if (DrinkList.drinks.get(i).getPrice() <= currentMoney && DrinkList.drinks.get(i).getStock() > 0) {
+
+//                //10원짜리가 모자랄 때
+//                if (DrinkList.drinks.get(0).getPrice() % 100 > MoneyList.moneyList.get(1).price && MoneyList.moneyList.get(1).getStock() > 0 && MoneyList.moneyList.get(0).getStock() * MoneyList.moneyList.get(0).getPrice() + MoneyList.moneyList.get(1).getPrice() > DrinkList.drinks.get(0).getPrice() % 100) {
+//
+//                }
+//
+//                if (DrinkList.drinks.get(0).getPrice() % 100 > MoneyList.moneyList.g)
+//
+//                    if (DrinkList.drinks.get(0).getPrice() % 100 > MoneyList.moneyList.get(0).getStock() * MoneyList.moneyList.get(0).getPrice()) {
+//                        if (MoneyList.moneyList.get(0))
+//                    }
+//
+//                //50원짜리가 모자랄 때
+//
+//                //100원짜리가 모자랄 때
+//
+//                //500원짜리가 모자랄 때
+//
+//
+//                if (DrinkList.drinks.get(0).getPrice() % 100) {
+//                }
+//                if (MoneyList.moneyList.get(1).getStock() == 0) {
+//
+//                }
+
+
                 canBuyButtons[i].setVisible(true);
                 canBuyButtons[i].setEnabled(true);
                 canNotBuyButtons[i].setVisible(false);
@@ -309,18 +388,7 @@ public class Frame extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new Frame().setVisible(true);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        //Frame frame = new Frame();
+        Frame frame = new Frame();
     }
 
 

@@ -9,6 +9,7 @@ public class Frame extends JFrame {
     private final JButton[] canBuyButtons = new JButton[6];
     private final JButton[] canNotBuyButtons = new JButton[6];
     private static String password;
+    private int[] insertMoneyCount = new int[5];
 
     public Frame() throws IOException {
         setTitle("Vending Machine");
@@ -283,43 +284,59 @@ public class Frame extends JFrame {
 
         //10원 입력 버튼
         moneyButton[0].addActionListener(e -> {
-            currentMoney += 10;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            MoneyList.moneyList.get(0).increaseStock();
-            updateBuyButton();
-            updateBuyButton();
+            if(currentMoney+10 <= 7000) {
+                insertMoneyCount[0]++;
+                currentMoney += 10;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(0).increaseStock();
+                updateBuyButton();
+                updateBuyButton();
+            }
         });
 
         //50원 입력 버튼
         moneyButton[1].addActionListener(e -> {
-            currentMoney += 50;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            MoneyList.moneyList.get(1).increaseStock();
-            updateBuyButton();
+            if(currentMoney+50 <= 7000) {
+                insertMoneyCount[1]++;
+                currentMoney += 50;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(1).increaseStock();
+                updateBuyButton();
+            }
         });
 
         //100원 입력 버튼
         moneyButton[2].addActionListener(e -> {
-            currentMoney += 100;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            MoneyList.moneyList.get(2).increaseStock();
-            updateBuyButton();
+            if(currentMoney+100 <= 7000) {
+                insertMoneyCount[2]++;
+                currentMoney += 100;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(2).increaseStock();
+                updateBuyButton();
+            }
         });
 
         //500원 입력 버튼
         moneyButton[3].addActionListener(e -> {
-            currentMoney += 500;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            MoneyList.moneyList.get(4).increaseStock();
-            updateBuyButton();
+            if(currentMoney+500 <= 7000) {
+                insertMoneyCount[3]++;
+                currentMoney += 500;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(4).increaseStock();
+                updateBuyButton();
+            }
         });
 
         //1000원 입력 버튼
         moneyButton[4].addActionListener(e -> {
-            currentMoney += 1000;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            MoneyList.moneyList.get(4).increaseStock();
-            updateBuyButton();
+            if(currentMoney+1000 <= 7000 && insertMoneyCount[4] < 5) {
+                insertMoneyCount[4]++;
+                currentMoney += 1000;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(4).increaseStock();
+                updateBuyButton();
+            }
+
         });
 
 

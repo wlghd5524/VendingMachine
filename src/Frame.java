@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 
 public class Frame extends JFrame {
@@ -8,7 +10,7 @@ public class Frame extends JFrame {
     private int pressLogoCount = 0;
     private final JButton[] canBuyButtons = new JButton[6];
     private final JButton[] canNotBuyButtons = new JButton[6];
-    private static String password;
+
     private int[] insertMoneyCount = new int[5];
 
     public Frame() throws IOException {
@@ -19,15 +21,7 @@ public class Frame extends JFrame {
         getContentPane().setBackground(new Color(252, 255, 216));
         setLayout(null);
 
-        //비밀번호 불러오기
-        try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                password = line;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         //음료 정보 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Drinks.txt"))) {
@@ -68,13 +62,7 @@ public class Frame extends JFrame {
         loginPanel.setVisible(false);
 
 
-        //관리자 패널
-        JPanel adminPanel = new JPanel();
-        adminPanel.setLayout(null);
-        adminPanel.setBackground(new Color(252, 255, 216));
-        adminPanel.setSize(1100, 1100);
-        add(adminPanel);
-        adminPanel.setVisible(false);
+
 
 
         Font buttonFont = new Font("Arial", Font.BOLD, 40);
@@ -119,9 +107,9 @@ public class Frame extends JFrame {
         incorrectPasswordLabel.setVisible(false);
         loginPanel.add(incorrectPasswordLabel);
         adminCheckButton.addActionListener(e -> {
-            if (passwordField.getText().equals(password)) {
+            if (passwordField.getText().equals(adminFrame.password)) {
                 loginPanel.setVisible(false);
-                adminPanel.setVisible(true);
+                buyPanel.setVisible(true);
             }
             else {
                 incorrectPasswordLabel.setVisible(true);
@@ -149,7 +137,7 @@ public class Frame extends JFrame {
         buyPanel.add(coffeeLabel);
 
         //이온 음료 이미지 불러오기
-        ImageIcon sportsDrinkIcon = new ImageIcon("image/sports drink.png");
+        ImageIcon sportsDrinkIcon = new ImageIcon("image/sportsDrink.png");
         Image sportsDrinkOriginalImage = sportsDrinkIcon.getImage();
         Image sportsDrinkResizedImage = sportsDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
         JLabel sportsDrinkLabel = new JLabel(new ImageIcon(sportsDrinkResizedImage));
@@ -165,7 +153,7 @@ public class Frame extends JFrame {
         buyPanel.add(sodaLabel);
 
         //고급 커피 이미지 불러오기
-        ImageIcon premiumCoffeeIcon = new ImageIcon("image/premium coffee.png");
+        ImageIcon premiumCoffeeIcon = new ImageIcon("image/premiumCoffee.png");
         Image premiumCoffeeOriginalImage = premiumCoffeeIcon.getImage();
         Image premiumCoffeeResizedImage = premiumCoffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
         JLabel premiumCoffeeLabel = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
@@ -173,7 +161,7 @@ public class Frame extends JFrame {
         buyPanel.add(premiumCoffeeLabel);
 
         //특별 음료 이미지 불러오기
-        ImageIcon specialDrinkIcon = new ImageIcon("image/special drink.png");
+        ImageIcon specialDrinkIcon = new ImageIcon("image/specialDrink.png");
         Image specialDrinkOriginalImage = specialDrinkIcon.getImage();
         Image specialDrinkResizedImage = specialDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
         JLabel specialDrinkLabel = new JLabel(new ImageIcon(specialDrinkResizedImage));
@@ -341,7 +329,7 @@ public class Frame extends JFrame {
 
 
         //반환 버튼
-        ImageIcon returnButtonImage = new ImageIcon("image/return button.png");
+        ImageIcon returnButtonImage = new ImageIcon("image/returnButton.png");
         Image returnButtonOriginalImage = returnButtonImage.getImage();
         Image returnButtonResizedImage = returnButtonOriginalImage.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         ImageIcon returnButtonResizedImageIcon = new ImageIcon(returnButtonResizedImage);
@@ -358,8 +346,46 @@ public class Frame extends JFrame {
             updateBuyButton();
         });
 
-        setVisible(true);
+        // 프로그램이 종료될 때
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //음료 정보 최신화
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("Drinks.txt"))) {
+                    for(int i = 0;i<DrinkList.drinks.size();i++) {
+                        writer.write(DrinkList.drinks.get(i).getName() + " ");
+                        writer.write(DrinkList.drinks.get(i).getPrice() + " ");
+                        writer.write(DrinkList.drinks.get(i).getStock() + " ");
+                        if(i == DrinkList.drinks.size()-1) {
+                            writer.write(DrinkList.drinks.get(i).getImagePath());
+                        }
+                        else {
+                            writer.write(DrinkList.drinks.get(i).getImagePath()+"\n");
+                        }
+                    };
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
+                //거스름돈 정보 최신화
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("Money.txt"))) {
+                    for(int i = 0;i<MoneyList.moneyList.size();i++) {
+                        writer.write(MoneyList.moneyList.get(i).getName() + " ");
+                        writer.write(MoneyList.moneyList.get(i).getPrice() + " ");
+                        if(i == MoneyList.moneyList.size()-1) {
+                            writer.write(MoneyList.moneyList.get(i).getStock()+"");
+                        }
+                        else {
+                            writer.write(MoneyList.moneyList.get(i).getStock() + "\n");
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        setVisible(true);
     }
 
     private void updateBuyButton() {
@@ -403,10 +429,5 @@ public class Frame extends JFrame {
             }
         }
     }
-
-    public static void main(String[] args) throws IOException {
-        Frame frame = new Frame();
-    }
-
 
 }

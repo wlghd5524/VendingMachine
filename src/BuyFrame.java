@@ -4,24 +4,21 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 
-public class Frame extends JFrame {
+public class BuyFrame extends JFrame {
     private int currentMoney = 0;
     private final JLabel currentMoneyLabel;
     private int pressLogoCount = 0;
     private final JButton[] canBuyButtons = new JButton[6];
     private final JButton[] canNotBuyButtons = new JButton[6];
-
     private int[] insertMoneyCount = new int[5];
 
-    public Frame() throws IOException {
+    public BuyFrame() throws IOException {
         setTitle("Vending Machine");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 1100);
 
         getContentPane().setBackground(new Color(252, 255, 216));
         setLayout(null);
-
-
 
         //음료 정보 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Drinks.txt"))) {
@@ -53,17 +50,6 @@ public class Frame extends JFrame {
         buyPanel.setBackground(new Color(252, 255, 216));
         add(buyPanel);
 
-        //관리자 로그인 패널
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(null);
-        loginPanel.setBackground(new Color(252, 255, 216));
-        loginPanel.setSize(1100, 1100);
-        add(loginPanel);
-        loginPanel.setVisible(false);
-
-
-
-
 
         Font buttonFont = new Font("Arial", Font.BOLD, 40);
 
@@ -87,36 +73,10 @@ public class Frame extends JFrame {
             pressLogoCount++;
             if (pressLogoCount == 5) {
                 pressLogoCount = 0;
-                buyPanel.setVisible(false);
-                loginPanel.setVisible(true);
+                AdminFrame.startAdminThread();
             }
         });
         buyPanel.add(logoButton);
-
-
-        //로그인 화면
-        JPasswordField passwordField = new JPasswordField();
-        JButton adminCheckButton = new JButton("확인");
-        passwordField.setBounds(350, 400, 400, 100);
-        adminCheckButton.setBounds(350, 500, 400, 100);
-        passwordField.setFont(buttonFont);
-        adminCheckButton.setFont(buttonFont);
-        JLabel incorrectPasswordLabel = new JLabel("비밀번호가 알맞지 않습니다.");
-        incorrectPasswordLabel.setFont(buttonFont);
-        incorrectPasswordLabel.setBounds(340, 300, 500, 100);
-        incorrectPasswordLabel.setVisible(false);
-        loginPanel.add(incorrectPasswordLabel);
-        adminCheckButton.addActionListener(e -> {
-            if (passwordField.getText().equals(adminFrame.password)) {
-                loginPanel.setVisible(false);
-                buyPanel.setVisible(true);
-            }
-            else {
-                incorrectPasswordLabel.setVisible(true);
-            }
-        });
-        loginPanel.add(adminCheckButton);
-        loginPanel.add(passwordField);
 
 
         //물 이미지 불러오기
@@ -149,7 +109,7 @@ public class Frame extends JFrame {
         Image sodaOriginalImage = sodaIcon.getImage();
         Image sodaResizedImage = sodaOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
         JLabel sodaLabel = new JLabel(new ImageIcon(sodaResizedImage));
-        sodaLabel.setBounds(135, 370, 100, 200);
+        sodaLabel.setBounds(510, 370, 100, 200);
         buyPanel.add(sodaLabel);
 
         //고급 커피 이미지 불러오기
@@ -157,7 +117,7 @@ public class Frame extends JFrame {
         Image premiumCoffeeOriginalImage = premiumCoffeeIcon.getImage();
         Image premiumCoffeeResizedImage = premiumCoffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
         JLabel premiumCoffeeLabel = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
-        premiumCoffeeLabel.setBounds(510, 370, 100, 200);
+        premiumCoffeeLabel.setBounds(135, 370, 100, 200);
         buyPanel.add(premiumCoffeeLabel);
 
         //특별 음료 이미지 불러오기
@@ -194,7 +154,7 @@ public class Frame extends JFrame {
             buyPanel.add(priceLabels[i]);
         }
 
-        //구매 가능 버튼
+        //구매 가능 버튼 이미지 불러오기
         for (int i = 0; i < 6; i++) {
             canBuyButtons[i] = new JButton(canBuyButtonResizedImageIcon);
             if (i < 3) {
@@ -207,36 +167,45 @@ public class Frame extends JFrame {
             canBuyButtons[i].setFocusPainted(false);
             buyPanel.add(canBuyButtons[i]);
         }
+
+        //구매 가능 버튼을 눌렀을 때 이벤트
+        //물 구매 가능 버튼
         canBuyButtons[0].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(0).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             DrinkList.drinks.get(0).decreaseStock();
             updateBuyButton();
         });
+        //커피 구매 가능 버튼
         canBuyButtons[1].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(1).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             DrinkList.drinks.get(1).decreaseStock();
             updateBuyButton();
         });
+        //이온 음료 구매 가능 버튼
         canBuyButtons[2].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(2).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             DrinkList.drinks.get(2).decreaseStock();
             updateBuyButton();
         });
+        //고급 커피 구매 가능 버튼
         canBuyButtons[3].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(3).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             DrinkList.drinks.get(3).decreaseStock();
             updateBuyButton();
         });
+        //탄산 음료 구매 가능 버튼
+
         canBuyButtons[4].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(4).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             DrinkList.drinks.get(4).decreaseStock();
             updateBuyButton();
         });
+        //특별 음료 구매 가능 버튼
         canBuyButtons[5].addActionListener(e -> {
             currentMoney -= DrinkList.drinks.get(5).getPrice();
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");

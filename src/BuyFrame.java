@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BuyFrame extends JFrame {
     private int currentMoney = 0;  //현재 입력된 돈
@@ -12,6 +11,7 @@ public class BuyFrame extends JFrame {
     private final JButton[] canBuyButtons = new JButton[6];
     private final JButton[] canNotBuyButtons = new JButton[6];
     private int[] insertMoneyCount = new int[5];
+    Font textFont = new Font("Arial", Font.BOLD, 40);
 
     public BuyFrame() throws IOException {
         setTitle("Vending Machine");
@@ -52,11 +52,11 @@ public class BuyFrame extends JFrame {
         add(buyPanel);
 
 
-        Font buttonFont = new Font("Arial", Font.BOLD, 40);
+
 
         //입력된 금액 표시
         currentMoneyLabel = new JLabel("현재 금액 : " + currentMoney + "원");
-        currentMoneyLabel.setFont(buttonFont);
+        currentMoneyLabel.setFont(textFont);
         currentMoneyLabel.setBounds(410, 700, 400, 150);
         buyPanel.add(currentMoneyLabel);
 
@@ -150,7 +150,7 @@ public class BuyFrame extends JFrame {
             } else {      //두번째 줄 음료 가격
                 priceLabels[i].setBounds(140 + ((i % 3) * 370), 570, 120, 50);
             }
-            priceLabels[i].setFont(buttonFont);
+            priceLabels[i].setFont(textFont);
             buyPanel.add(priceLabels[i]);
         }
 
@@ -234,7 +234,7 @@ public class BuyFrame extends JFrame {
         for (int i = 0; i < 5; i++) {
             moneyButton[i] = new JButton(MoneyList.moneyList.get(i).getName());
             moneyButton[i].setBounds(50 + (i * 210), 900, 150, 100);
-            moneyButton[i].setFont(buttonFont);
+            moneyButton[i].setFont(textFont);
             buyPanel.add(moneyButton[i]);
         }
 
@@ -363,7 +363,7 @@ public class BuyFrame extends JFrame {
                             writer.write(DrinkList.drinks.get(i).getImagePath() + "\n");
                         }
                     }
-                    ;
+
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

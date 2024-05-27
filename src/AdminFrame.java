@@ -1,17 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdminFrame extends JFrame {
-    private static String password;
-
+    static String password;
+    Font textFont = new Font("Arial", Font.BOLD, 40);
+    static JPanel adminPanel;
     public AdminFrame() {
         //비밀번호 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
@@ -27,7 +25,6 @@ public class AdminFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);
         getContentPane().setBackground(Color.WHITE);
-        Font buttonFont = new Font("Arial", Font.BOLD, 40);
 
         //관리자 로그인 패널
         JPanel loginPanel = new JPanel();
@@ -38,27 +35,29 @@ public class AdminFrame extends JFrame {
         loginPanel.setVisible(true);
 
         //관리자 패널
-        JPanel adminPanel = new JPanel();
-        adminPanel.setLayout(new GridLayout(2,3,50,50));
+        adminPanel = new JPanel();
+        adminPanel.setLayout(new GridLayout(2, 3, 50, 50));
         adminPanel.setBackground(new Color(252, 255, 216));
         adminPanel.setSize(900, 600);
         add(adminPanel);
         adminPanel.setVisible(false);
 
         //로그인 화면
-        JPasswordField passwordField = new JPasswordField();
+        JPasswordField passwordField = new JPasswordField("비밀번호 입력");
+        passwordField.setForeground(Color.GRAY);
         JButton adminCheckButton = new JButton("확인");
         passwordField.setBounds(250, 200, 400, 100);
         adminCheckButton.setBounds(250, 300, 400, 100);
-        passwordField.setFont(buttonFont);
-        adminCheckButton.setFont(buttonFont);
+        passwordField.setFont(textFont);
+        adminCheckButton.setFont(textFont);
         JLabel incorrectPasswordLabel = new JLabel("비밀번호가 알맞지 않습니다.");
-        incorrectPasswordLabel.setFont(buttonFont);
+        incorrectPasswordLabel.setFont(textFont);
         incorrectPasswordLabel.setBounds(220, 100, 500, 100);
         incorrectPasswordLabel.setVisible(false);
         loginPanel.add(incorrectPasswordLabel);
         adminCheckButton.addActionListener(e -> {
-            if (passwordField.getText().equals(AdminFrame.password)) {
+            String insertedPassword = String.valueOf(passwordField.getPassword());
+            if (insertedPassword.equals(password)) {
                 loginPanel.setVisible(false);
                 adminPanel.setVisible(true);
             } else {
@@ -68,20 +67,36 @@ public class AdminFrame extends JFrame {
         loginPanel.add(adminCheckButton);
         loginPanel.add(passwordField);
 
+        // 비밀번호 입력 칸에 아무 것도 입력하지 않았을 때 힌트 문자
+        passwordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (String.valueOf(passwordField.getPassword()).equals("비밀번호 입력")) {
+                    passwordField.setText("");
+                    passwordField.setForeground(Color.BLACK);
+                    passwordField.setEchoChar('⦁');
+                }
+            }
 
-        //비밀번호 변경 화면
-        JPanel passwordChangePanel = new JPanel();
-        passwordChangePanel.setBackground(new Color(252, 255, 216));
-        passwordChangePanel.setSize(900, 600);
-        passwordChangePanel.setLayout(null);
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (passwordField.getPassword().length == 0) {
+                    passwordField.setText("비밀번호 입력");
+                    passwordField.setForeground(Color.GRAY);
+                    passwordField.setEchoChar((char) 0);
+                }
+            }
+        });
+
+
+        JPanel passwordChangePanel = new passwordChangePanel();
         add(passwordChangePanel);
-        passwordChangePanel.setVisible(false);
 
-        //비밀번호 변경 버튼
-        JButton passwordChangeButton = new JButton("<html><div style='text-align: center;'>비밀번호<br>변경</div></html>");
-        passwordChangeButton.setFont(buttonFont);
-        adminPanel.add(passwordChangeButton);
-        passwordChangeButton.addActionListener(e-> {
+        //비밀번호 변경 메뉴 버튼
+        JButton passwordChangeMenuButton = new JButton("<html><div style='text-align: center;'>비밀번호<br>변경</div></html>");
+        passwordChangeMenuButton.setFont(textFont);
+        adminPanel.add(passwordChangeMenuButton);
+        passwordChangeMenuButton.addActionListener(e -> {
             passwordChangePanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -97,9 +112,9 @@ public class AdminFrame extends JFrame {
 
         //음료 재고 버튼
         JButton addDrinkButton = new JButton("재고 보충");
-        addDrinkButton.setFont(buttonFont);
+        addDrinkButton.setFont(textFont);
         adminPanel.add(addDrinkButton);
-        addDrinkButton.addActionListener(e-> {
+        addDrinkButton.addActionListener(e -> {
             addDrinkPanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -115,9 +130,9 @@ public class AdminFrame extends JFrame {
 
         //자판기 일별/월별 매출 산출 버튼
         JButton machineSalesReportButton = new JButton("<html><div style='text-align: center;'>자판기<br>일별/월별<br>매출 산출</div></html>");
-        machineSalesReportButton.setFont(buttonFont);
+        machineSalesReportButton.setFont(textFont);
         adminPanel.add(machineSalesReportButton);
-        machineSalesReportButton.addActionListener(e-> {
+        machineSalesReportButton.addActionListener(e -> {
             machineSalesReportPanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -133,9 +148,9 @@ public class AdminFrame extends JFrame {
 
         //음료 일별/월별 매출 산출
         JButton drinkSalesReportButton = new JButton("<html><div style='text-align: center;'>음료<br>일별/월별<br>매출 산출</div></html>");
-        drinkSalesReportButton.setFont(buttonFont);
+        drinkSalesReportButton.setFont(textFont);
         adminPanel.add(drinkSalesReportButton);
-        drinkSalesReportButton.addActionListener(e-> {
+        drinkSalesReportButton.addActionListener(e -> {
             drinkSalesReportPanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -151,9 +166,9 @@ public class AdminFrame extends JFrame {
 
         //수금 버튼
         JButton collectMoneyButton = new JButton("수금");
-        collectMoneyButton.setFont(buttonFont);
+        collectMoneyButton.setFont(textFont);
         adminPanel.add(collectMoneyButton);
-        collectMoneyButton.addActionListener(e-> {
+        collectMoneyButton.addActionListener(e -> {
             collectMoneyPanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -168,9 +183,9 @@ public class AdminFrame extends JFrame {
 
         //음료 정보 변경 버튼
         JButton modifyDrinkButton = new JButton("<html><div style='text-align: center;'>음료<br>정보 변경</div></html>");
-        modifyDrinkButton.setFont(buttonFont);
+        modifyDrinkButton.setFont(textFont);
         adminPanel.add(modifyDrinkButton);
-        modifyDrinkButton.addActionListener(e-> {
+        modifyDrinkButton.addActionListener(e -> {
             modifyDrinkPanel.setVisible(true);
             adminPanel.setVisible(false);
         });
@@ -185,6 +200,7 @@ public class AdminFrame extends JFrame {
         });
         setVisible(true);
     }
+
     private static final AtomicBoolean isAdminThreadRunning = new AtomicBoolean(false);
     static Runnable adminMode = () -> {
         try {
@@ -195,11 +211,10 @@ public class AdminFrame extends JFrame {
     };
 
     public static void startAdminThread() {
-        if(isAdminThreadRunning.compareAndSet(false, true)) {
+        if (isAdminThreadRunning.compareAndSet(false, true)) {
             Thread adminThread = new Thread(adminMode);
             adminThread.start();
         }
-
 
 
     }

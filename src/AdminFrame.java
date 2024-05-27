@@ -7,6 +7,7 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdminFrame extends JFrame {
@@ -58,7 +59,11 @@ public class AdminFrame extends JFrame {
         incorrectPasswordLabel.setVisible(false);
         loginPanel.add(incorrectPasswordLabel);
         adminCheckButton.addActionListener(e -> {
-            if (passwordField.getText().equals(AdminFrame.password)) {
+            String insertedPassword = String.valueOf(passwordField.getPassword());
+            if(insertedPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+                insertedPassword = HangulToQwerty.convertHangulToQwerty(insertedPassword);
+            }
+            if (insertedPassword.equals(AdminFrame.password)) {
                 loginPanel.setVisible(false);
                 adminPanel.setVisible(true);
             } else {

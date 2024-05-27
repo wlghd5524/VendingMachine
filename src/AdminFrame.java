@@ -10,6 +10,8 @@ public class AdminFrame extends JFrame {
     static String password;
     Font textFont = new Font("Arial", Font.BOLD, 40);
     static JPanel adminPanel;
+
+
     public AdminFrame() {
         //비밀번호 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
@@ -24,6 +26,7 @@ public class AdminFrame extends JFrame {
         setTitle("Admin Page");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);
+        setResizable(false);
         getContentPane().setBackground(Color.WHITE);
 
         //관리자 로그인 패널
@@ -57,7 +60,7 @@ public class AdminFrame extends JFrame {
         loginPanel.add(incorrectPasswordLabel);
         adminCheckButton.addActionListener(e -> {
             String insertedPassword = String.valueOf(passwordField.getPassword());
-            if(insertedPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+            if (insertedPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
                 insertedPassword = HangulToQwerty.convertHangulToQwerty(insertedPassword);
             }
             if (insertedPassword.equals(AdminFrame.password)) {
@@ -91,11 +94,10 @@ public class AdminFrame extends JFrame {
             }
         });
 
-
+        //비밀번호 변경 화면
         JPanel passwordChangePanel = new passwordChangePanel();
         add(passwordChangePanel);
         passwordChangePanel.setVisible(false);
-
         //비밀번호 변경 메뉴 버튼
         JButton passwordChangeMenuButton = new JButton("<html><div style='text-align: center;'>비밀번호<br>변경</div></html>");
         passwordChangeMenuButton.setFont(textFont);
@@ -107,14 +109,9 @@ public class AdminFrame extends JFrame {
 
 
         //재고 보충 화면
-        JPanel addDrinkPanel = new JPanel();
-        addDrinkPanel.setBackground(new Color(252, 255, 216));
-        addDrinkPanel.setSize(900, 600);
-        addDrinkPanel.setLayout(null);
+        JPanel addDrinkPanel = new AddDrinkPanel();
         add(addDrinkPanel);
-        addDrinkPanel.setVisible(false);
-
-        //음료 재고 버튼
+        //재고 보충 메뉴 버튼
         JButton addDrinkButton = new JButton("재고 보충");
         addDrinkButton.setFont(textFont);
         adminPanel.add(addDrinkButton);
@@ -162,11 +159,7 @@ public class AdminFrame extends JFrame {
 
         //수금 화면
         JPanel collectMoneyPanel = new JPanel();
-        collectMoneyPanel.setBackground(new Color(252, 255, 216));
-        collectMoneyPanel.setSize(900, 600);
-        collectMoneyPanel.setLayout(null);
         add(collectMoneyPanel);
-        collectMoneyPanel.setVisible(false);
 
         //수금 버튼
         JButton collectMoneyButton = new JButton("수금");

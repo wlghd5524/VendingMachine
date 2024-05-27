@@ -8,12 +8,30 @@ import java.io.IOException;
 
 public class passwordChangePanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
+
     passwordChangePanel() {
         //비밀번호 변경 화면
         setBackground(new Color(252, 255, 216));
         setSize(900, 600);
         setLayout(null);
         setVisible(false);
+
+        //뒤로 가기 버튼
+        ImageIcon backIcon = new ImageIcon("image/back.png");
+        Image backOriginalImage = backIcon.getImage();
+        Image backResizedImage = backOriginalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon backIconResized = new ImageIcon(backResizedImage);
+        JButton backButton = new JButton(backIconResized);
+        backButton.setBounds(0, 0, 50, 50);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setFocusPainted(false);
+        add(backButton);
+        backButton.addActionListener(e -> {
+            setVisible(false);
+            AdminFrame.adminPanel.setVisible(true);
+        });
+
 
         JPasswordField currentPasswordField = new JPasswordField("현재 비밀번호 입력");
         currentPasswordField.setFont(textFont);
@@ -37,7 +55,7 @@ public class passwordChangePanel extends JPanel {
 
         JLabel passwordErrorLabel = new JLabel();
         passwordErrorLabel.setFont(textFont);
-        passwordErrorLabel.setBounds(220,10,800,100);
+        passwordErrorLabel.setBounds(220, 10, 800, 100);
         add(passwordErrorLabel);
         passwordErrorLabel.setVisible(false);
 
@@ -103,18 +121,18 @@ public class passwordChangePanel extends JPanel {
             String currentPassword = new String(currentPasswordField.getPassword());    //현재 비밀번호
             String newPassword = new String(newPasswordField.getPassword());        //새 비밀번호
             String confirmPassword = new String(confirmPasswordField.getPassword());    //새 비밀번호 확인
-            if(currentPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+            if (currentPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
                 currentPassword = HangulToQwerty.convertHangulToQwerty(currentPassword);
             }
-            if(newPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+            if (newPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
                 newPassword = HangulToQwerty.convertHangulToQwerty(newPassword);
             }
-            if(confirmPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+            if (confirmPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
                 confirmPassword = HangulToQwerty.convertHangulToQwerty(confirmPassword);
             }
             if (currentPassword.equals(AdminFrame.password)) {                //입력한 비밀번호가 맞을 때
                 if (newPassword.equals(confirmPassword)) {         //새 비밀번호와 비밀번호 확인에 입력된 값이 같을 때
-                    if(newPassword.length() >= 8) {
+                    if (newPassword.length() >= 8) {
                         // 새 비밀번호의 유효성 검사 (알파벳, 숫자, 특수문자 각각 한 번씩 포함)
                         if (newPassword.matches(".*[A-Za-z].*") && newPassword.matches(".*\\d.*") && newPassword.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
                             AdminFrame.password = newPassword;
@@ -126,25 +144,24 @@ public class passwordChangePanel extends JPanel {
                             setVisible(false);
                             AdminFrame.adminPanel.setVisible(true);
                         } else {
-                            passwordErrorLabel.setBounds(20,10,900,100);
+                            passwordErrorLabel.setBounds(20, 10, 900, 100);
                             passwordErrorLabel.setText("비밀번호는 알파벳, 숫자, 특수문자를 포함해야 합니다.");
                             passwordErrorLabel.setVisible(true);
                         }
 
-                    }
-                    else {
-                        passwordErrorLabel.setBounds(180,10,900,100);
+                    } else {
+                        passwordErrorLabel.setBounds(180, 10, 900, 100);
                         passwordErrorLabel.setText("비밀번호는 8자리 이상이어야 합니다.");
                         passwordErrorLabel.setVisible(true);
                     }
 
                 } else {                              //새 비밀번호와 비밀번호 확인에 입력된 값이 다를 때
-                    passwordErrorLabel.setBounds(50,10,900,100);
+                    passwordErrorLabel.setBounds(50, 10, 900, 100);
                     passwordErrorLabel.setText("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
                     passwordErrorLabel.setVisible(true);
                 }
             } else {      //입력한 비밀번호가 틀릴 때
-                passwordErrorLabel.setBounds(180,10,900,100);
+                passwordErrorLabel.setBounds(180, 10, 900, 100);
                 passwordErrorLabel.setText("현재 비밀번호가 일치하지 않습니다.");
                 passwordErrorLabel.setVisible(true);
             }

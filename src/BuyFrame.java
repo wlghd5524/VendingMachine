@@ -11,11 +11,13 @@ public class BuyFrame extends JFrame {
     private final JButton[] canBuyButtons = new JButton[6];
     private final JButton[] canNotBuyButtons = new JButton[6];
     private int[] insertMoneyCount = new int[5];
+    static JLabel[] drinkImageLabel = new JLabel[6];
     Font textFont = new Font("Arial", Font.BOLD, 40);
 
     public BuyFrame() throws IOException {
         setTitle("Vending Machine");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setSize(1100, 1100);
 
         getContentPane().setBackground(new Color(252, 255, 216));
@@ -52,8 +54,6 @@ public class BuyFrame extends JFrame {
         add(buyPanel);
 
 
-
-
         //입력된 금액 표시
         currentMoneyLabel = new JLabel("현재 금액 : " + currentMoney + "원");
         currentMoneyLabel.setFont(textFont);
@@ -83,50 +83,49 @@ public class BuyFrame extends JFrame {
         ImageIcon waterIcon = new ImageIcon("image/water.png");
         Image waterOriginalImage = waterIcon.getImage();
         Image waterResizedImage = waterOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel waterLabel = new JLabel(new ImageIcon(waterResizedImage));
-        waterLabel.setBounds(135, 40, 100, 200);
-        buyPanel.add(waterLabel);
-
+        drinkImageLabel[0] = new JLabel(new ImageIcon(waterResizedImage));
+        drinkImageLabel[0].setBounds(135, 40, 100, 200);
+        buyPanel.add(drinkImageLabel[0]);
 
         //커피 이미지 불러오기
         ImageIcon coffeeIcon = new ImageIcon("image/coffee.png");
         Image coffeeOriginalImage = coffeeIcon.getImage();
         Image coffeeResizedImage = coffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel coffeeLabel = new JLabel(new ImageIcon(coffeeResizedImage));
-        coffeeLabel.setBounds(510, 40, 100, 200);
-        buyPanel.add(coffeeLabel);
+        drinkImageLabel[1] = new JLabel(new ImageIcon(coffeeResizedImage));
+        drinkImageLabel[1].setBounds(510, 40, 100, 200);
+        buyPanel.add(drinkImageLabel[1]);
 
         //이온 음료 이미지 불러오기
         ImageIcon sportsDrinkIcon = new ImageIcon("image/sportsDrink.png");
         Image sportsDrinkOriginalImage = sportsDrinkIcon.getImage();
         Image sportsDrinkResizedImage = sportsDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel sportsDrinkLabel = new JLabel(new ImageIcon(sportsDrinkResizedImage));
-        sportsDrinkLabel.setBounds(880, 40, 100, 200);
-        buyPanel.add(sportsDrinkLabel);
+        drinkImageLabel[2] = new JLabel(new ImageIcon(sportsDrinkResizedImage));
+        drinkImageLabel[2].setBounds(880, 40, 100, 200);
+        buyPanel.add(drinkImageLabel[2]);
 
         //탄산 음료 이미지 불러오기
         ImageIcon sodaIcon = new ImageIcon("image/soda.png");
         Image sodaOriginalImage = sodaIcon.getImage();
         Image sodaResizedImage = sodaOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel sodaLabel = new JLabel(new ImageIcon(sodaResizedImage));
-        sodaLabel.setBounds(510, 370, 100, 200);
-        buyPanel.add(sodaLabel);
+        drinkImageLabel[3] = new JLabel(new ImageIcon(sodaResizedImage));
+        drinkImageLabel[3].setBounds(510, 370, 100, 200);
+        buyPanel.add(drinkImageLabel[3]);
 
         //고급 커피 이미지 불러오기
         ImageIcon premiumCoffeeIcon = new ImageIcon("image/premiumCoffee.png");
         Image premiumCoffeeOriginalImage = premiumCoffeeIcon.getImage();
         Image premiumCoffeeResizedImage = premiumCoffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel premiumCoffeeLabel = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
-        premiumCoffeeLabel.setBounds(135, 370, 100, 200);
-        buyPanel.add(premiumCoffeeLabel);
+        drinkImageLabel[4] = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
+        drinkImageLabel[4].setBounds(135, 370, 100, 200);
+        buyPanel.add(drinkImageLabel[4]);
 
         //특별 음료 이미지 불러오기
         ImageIcon specialDrinkIcon = new ImageIcon("image/specialDrink.png");
         Image specialDrinkOriginalImage = specialDrinkIcon.getImage();
         Image specialDrinkResizedImage = specialDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        JLabel specialDrinkLabel = new JLabel(new ImageIcon(specialDrinkResizedImage));
-        specialDrinkLabel.setBounds(880, 370, 100, 200);
-        buyPanel.add(specialDrinkLabel);
+        drinkImageLabel[5] = new JLabel(new ImageIcon(specialDrinkResizedImage));
+        drinkImageLabel[5].setBounds(880, 370, 100, 200);
+        buyPanel.add(drinkImageLabel[5]);
 
         //구매 가능 버튼 이미지 불러오기
         ImageIcon canBuyButton = new ImageIcon("image/can buy button.png");
@@ -169,49 +168,16 @@ public class BuyFrame extends JFrame {
         }
 
         //구매 가능 버튼을 눌렀을 때 이벤트
-        //물 구매 가능 버튼
-        canBuyButtons[0].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(0).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(0).decreaseStock();
-            updateBuyButton();
-        });
-        //커피 구매 가능 버튼
-        canBuyButtons[1].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(1).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(1).decreaseStock();
-            updateBuyButton();
-        });
-        //이온 음료 구매 가능 버튼
-        canBuyButtons[2].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(2).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(2).decreaseStock();
-            updateBuyButton();
-        });
-        //고급 커피 구매 가능 버튼
-        canBuyButtons[3].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(3).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(3).decreaseStock();
-            updateBuyButton();
-        });
-        //탄산 음료 구매 가능 버튼
-        canBuyButtons[4].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(4).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(4).decreaseStock();
-            updateBuyButton();
-        });
-        //특별 음료 구매 가능 버튼
-        canBuyButtons[5].addActionListener(e -> {
-            currentMoney -= DrinkList.drinks.get(5).getPrice();
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            DrinkList.drinks.get(5).decreaseStock();
-            updateBuyButton();
-        });
-
+        for (int i = 0; i < 6; i++) {
+            int finalI = i;
+            int finalI1 = i;
+            canBuyButtons[i].addActionListener(e -> {
+                currentMoney -= DrinkList.drinks.get(finalI).getPrice();
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                DrinkList.drinks.get(finalI1).setPrice(DrinkList.drinks.get(finalI1).getStock() - 1);
+                updateBuyButton();
+            });
+        }
 
         //구매 불가 표시
         for (int i = 0; i < 6; i++) {

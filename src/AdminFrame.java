@@ -25,7 +25,6 @@ public class AdminFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);
         getContentPane().setBackground(Color.WHITE);
-        Font buttonFont = new Font("Arial", Font.BOLD, 40);
 
         //관리자 로그인 패널
         JPanel loginPanel = new JPanel();
@@ -71,6 +70,26 @@ public class AdminFrame extends JFrame {
         loginPanel.add(adminCheckButton);
         loginPanel.add(passwordField);
 
+        // 비밀번호 입력 칸에 아무 것도 입력하지 않았을 때 힌트 문자
+        passwordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (String.valueOf(passwordField.getPassword()).equals("비밀번호 입력")) {
+                    passwordField.setText("");
+                    passwordField.setForeground(Color.BLACK);
+                    passwordField.setEchoChar('⦁');
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (passwordField.getPassword().length == 0) {
+                    passwordField.setText("비밀번호 입력");
+                    passwordField.setForeground(Color.GRAY);
+                    passwordField.setEchoChar((char) 0);
+                }
+            }
+        });
 
 
         JPanel passwordChangePanel = new passwordChangePanel();

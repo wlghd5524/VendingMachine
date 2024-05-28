@@ -140,12 +140,9 @@ public class AdminFrame extends JFrame {
 
 
         //음료 매출 산출 화면
-        JPanel drinkSalesReportPanel = new JPanel();
-        drinkSalesReportPanel.setBackground(new Color(252, 255, 216));
-        drinkSalesReportPanel.setSize(900, 600);
-        drinkSalesReportPanel.setLayout(null);
+        JPanel drinkSalesReportPanel = new DrinkSalesReportPanel();
         add(drinkSalesReportPanel);
-        drinkSalesReportPanel.setVisible(false);
+
 
         //음료 일별/월별 매출 산출
         JButton drinkSalesReportButton = new JButton("<html><div style='text-align: center;'>음료<br>일별/월별<br>매출 산출</div></html>");

@@ -70,9 +70,9 @@ public class DrinkSalesReportPanel extends JPanel {
         yearLabel.setFont(textFont);
         monthLabel.setFont(textFont);
         dayLabel.setFont(textFont);
-        yearLabel.setBounds(200, 200, 100, 50);
-        monthLabel.setBounds(400, 200, 100, 50);
-        dayLabel.setBounds(600, 200, 100, 50);
+        yearLabel.setBounds(180, 200, 100, 50);
+        monthLabel.setBounds(380, 200, 100, 50);
+        dayLabel.setBounds(580, 200, 100, 50);
 
 
         //일별 매출 라벨
@@ -106,15 +106,19 @@ public class DrinkSalesReportPanel extends JPanel {
         monthComboBox.setFont(comboBoxFont);
         dayComboBox.setFont(comboBoxFont);
         drinkComboBox.setFont(comboBoxFont);
-        yearComboBox.setBounds(50, 200, 150, 50);
-        monthComboBox.setBounds(250, 200, 150, 50);
-        dayComboBox.setBounds(450, 200, 150, 50);
-        drinkComboBox.setBounds(650, 200, 150, 50);
+        yearComboBox.setBounds(20, 200, 150, 50);
+        monthComboBox.setBounds(220, 200, 150, 50);
+        dayComboBox.setBounds(420, 200, 150, 50);
+        drinkComboBox.setBounds(620, 200, 150, 50);
+        LocalDate localDate = LocalDate.now();
+        yearComboBox.setSelectedItem(String.valueOf(localDate.getYear()));
+        monthComboBox.setSelectedItem(String.valueOf(localDate.getMonthValue()));
+        dayComboBox.setSelectedItem(String.valueOf(localDate.getDayOfMonth()));
 
         //날짜 선택 버튼
         JButton selectButton = new JButton("선택");
         selectButton.setFont(textFont);
-        selectButton.setBounds(850, 200, 100, 50);
+        selectButton.setBounds(780, 200, 100, 50);
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
             int month = Integer.parseInt((String) monthComboBox.getSelectedItem());

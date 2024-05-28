@@ -101,6 +101,10 @@ public class MachineSalesReportPanel extends JPanel {
         yearComboBox.setBounds(50, 200, 150, 50);
         monthComboBox.setBounds(250, 200, 150, 50);
         dayComboBox.setBounds(450, 200, 150, 50);
+        LocalDate localDate = LocalDate.now();
+        yearComboBox.setSelectedItem(String.valueOf(localDate.getYear()));
+        monthComboBox.setSelectedItem(String.valueOf(localDate.getMonthValue()));
+        dayComboBox.setSelectedItem(String.valueOf(localDate.getDayOfMonth()));
 
         //날짜 선택 버튼
         JButton selectButton = new JButton("선택");

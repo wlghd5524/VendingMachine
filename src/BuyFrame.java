@@ -1,8 +1,12 @@
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BuyFrame extends JFrame {
     private int currentMoney = 0;  //현재 입력된 돈
@@ -170,12 +174,20 @@ public class BuyFrame extends JFrame {
         //구매 가능 버튼을 눌렀을 때 이벤트
         for (int i = 0; i < 6; i++) {
             int finalI = i;
-            int finalI1 = i;
             canBuyButtons[i].addActionListener(e -> {
                 currentMoney -= DrinkList.drinks.get(finalI).getPrice();
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                DrinkList.drinks.get(finalI1).setPrice(DrinkList.drinks.get(finalI1).getStock() - 1);
+                DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);
                 updateBuyButton();
+                //매출 추가
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("SalesReport.txt", true))) {
+                    LocalDateTime today = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
+                    String formattedDate = formatter.format(today);
+                    writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice() + "\n");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             });
         }
 

@@ -122,12 +122,9 @@ public class AdminFrame extends JFrame {
 
 
         //자판기 매출 산출 화면
-        JPanel machineSalesReportPanel = new JPanel();
-        machineSalesReportPanel.setBackground(new Color(252, 255, 216));
-        machineSalesReportPanel.setSize(900, 600);
-        machineSalesReportPanel.setLayout(null);
+        JPanel machineSalesReportPanel = new MachineSalesReportPanel();
         add(machineSalesReportPanel);
-        machineSalesReportPanel.setVisible(false);
+
 
         //자판기 일별/월별 매출 산출 버튼
         JButton machineSalesReportButton = new JButton("<html><div style='text-align: center;'>자판기<br>일별/월별<br>매출 산출</div></html>");

@@ -184,7 +184,11 @@ public class BuyFrame extends JFrame {
                     LocalDateTime today = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
                     String formattedDate = formatter.format(today);
-                    writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice() + "\n");
+                    writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice());
+                    if(DrinkList.drinks.get(finalI).getStock() == 0){
+                        writer.write(" Sold Out");
+                    }
+                    writer.newLine();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -222,7 +226,7 @@ public class BuyFrame extends JFrame {
                 insertMoneyCount[0]++;
                 currentMoney += 10;
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(0).increaseStock();
+                MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() + 1);
                 updateBuyButton();
                 updateBuyButton();
             }
@@ -234,7 +238,7 @@ public class BuyFrame extends JFrame {
                 insertMoneyCount[1]++;
                 currentMoney += 50;
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(1).increaseStock();
+                MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() + 1);
                 updateBuyButton();
             }
         });
@@ -245,7 +249,7 @@ public class BuyFrame extends JFrame {
                 insertMoneyCount[2]++;
                 currentMoney += 100;
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(2).increaseStock();
+                MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() + 1);;
                 updateBuyButton();
             }
         });
@@ -256,7 +260,7 @@ public class BuyFrame extends JFrame {
                 insertMoneyCount[3]++;
                 currentMoney += 500;
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(4).increaseStock();
+                MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() + 1);;
                 updateBuyButton();
             }
         });
@@ -267,7 +271,7 @@ public class BuyFrame extends JFrame {
                 insertMoneyCount[4]++;
                 currentMoney += 1000;
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(4).increaseStock();
+                MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() + 1);;
                 updateBuyButton();
             }
 
@@ -289,34 +293,34 @@ public class BuyFrame extends JFrame {
         returnButton.addActionListener(e -> {
             while (currentMoney > 0) {
                 if (currentMoney >= 1000) {
-                    MoneyList.moneyList.get(4).decreaseStock();
+                    MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);;
                     currentMoney -= 1000;
                 } else if (currentMoney >= 500) {
                     if (MoneyList.moneyList.get(3).getStock() == 0) {
-                        MoneyList.moneyList.get(2).decreaseStock();
+                        MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
                         currentMoney -= 100;
                     } else {
-                        MoneyList.moneyList.get(3).decreaseStock();
+                        MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() - 1);
                         currentMoney -= 500;
                     }
                 } else if (currentMoney >= 100) {
                     if (MoneyList.moneyList.get(2).getStock() == 0) {
-                        MoneyList.moneyList.get(1).decreaseStock();
+                        MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
                         currentMoney -= 50;
                     } else {
-                        MoneyList.moneyList.get(2).decreaseStock();
+                        MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
                         currentMoney -= 100;
                     }
                 } else if (currentMoney >= 50) {
                     if (MoneyList.moneyList.get(1).getStock() == 0) {
-                        MoneyList.moneyList.get(0).decreaseStock();
+                        MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
                         currentMoney -= 10;
                     } else {
-                        MoneyList.moneyList.get(1).decreaseStock();
+                        MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
                         currentMoney -= 50;
                     }
                 } else {
-                    MoneyList.moneyList.get(0).decreaseStock();
+                    MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
                     currentMoney -= 10;
                 }
             }

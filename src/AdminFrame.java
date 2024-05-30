@@ -124,8 +124,6 @@ public class AdminFrame extends JFrame {
         //자판기 매출 산출 화면
         JPanel machineSalesReportPanel = new MachineSalesReportPanel();
         add(machineSalesReportPanel);
-
-
         //자판기 일별/월별 매출 산출 버튼
         JButton machineSalesReportButton = new JButton("<html><div style='text-align: center;'>자판기<br>일별/월별<br>매출 산출</div></html>");
         machineSalesReportButton.setFont(textFont);
@@ -139,8 +137,6 @@ public class AdminFrame extends JFrame {
         //음료 매출 산출 화면
         JPanel drinkSalesReportPanel = new DrinkSalesReportPanel();
         add(drinkSalesReportPanel);
-
-
         //음료 일별/월별 매출 산출
         JButton drinkSalesReportButton = new JButton("<html><div style='text-align: center;'>음료<br>일별/월별<br>매출 산출</div></html>");
         drinkSalesReportButton.setFont(textFont);
@@ -152,9 +148,8 @@ public class AdminFrame extends JFrame {
 
 
         //수금 화면
-        JPanel collectMoneyPanel = new JPanel();
+        JPanel collectMoneyPanel = new CollectMoneyPanel();
         add(collectMoneyPanel);
-
         //수금 버튼
         JButton collectMoneyButton = new JButton("수금");
         collectMoneyButton.setFont(textFont);

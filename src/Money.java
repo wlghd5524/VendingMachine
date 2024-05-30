@@ -22,10 +22,7 @@ public class Money {
     public int getStock() {
         return stock;
     }
-    public void increaseStock() {
-        stock++;
-    }
-    public void decreaseStock() {
-        stock--;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

@@ -31,53 +31,19 @@ public class AddDrinkPanel extends JPanel {
 
         //음료 이미지
         JLabel[] drinkImageLabel = new JLabel[6];
-        //물 이미지 불러오기
-        ImageIcon waterIcon = new ImageIcon("image/water.png");
-        Image waterOriginalImage = waterIcon.getImage();
-        Image waterResizedImage = waterOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[0] = new JLabel(new ImageIcon(waterResizedImage));
-        drinkImageLabel[0].setBounds(50, 40, 100, 200);
-        add(drinkImageLabel[0]);
-
-        //커피 이미지 불러오기
-        ImageIcon coffeeIcon = new ImageIcon("image/coffee.png");
-        Image coffeeOriginalImage = coffeeIcon.getImage();
-        Image coffeeResizedImage = coffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[1] = new JLabel(new ImageIcon(coffeeResizedImage));
-        drinkImageLabel[1].setBounds(350, 40, 100, 200);
-        add(drinkImageLabel[1]);
-
-        //이온 음료 이미지 불러오기
-        ImageIcon sportsDrinkIcon = new ImageIcon("image/sportsDrink.png");
-        Image sportsDrinkOriginalImage = sportsDrinkIcon.getImage();
-        Image sportsDrinkResizedImage = sportsDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[2] = new JLabel(new ImageIcon(sportsDrinkResizedImage));
-        drinkImageLabel[2].setBounds(650, 40, 100, 200);
-        add(drinkImageLabel[2]);
-
-        //탄산 음료 이미지 불러오기
-        ImageIcon sodaIcon = new ImageIcon("image/soda.png");
-        Image sodaOriginalImage = sodaIcon.getImage();
-        Image sodaResizedImage = sodaOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[3] = new JLabel(new ImageIcon(sodaResizedImage));
-        drinkImageLabel[3].setBounds(350, 300, 100, 200);
-        add(drinkImageLabel[3]);
-
-        //고급 커피 이미지 불러오기
-        ImageIcon premiumCoffeeIcon = new ImageIcon("image/premiumCoffee.png");
-        Image premiumCoffeeOriginalImage = premiumCoffeeIcon.getImage();
-        Image premiumCoffeeResizedImage = premiumCoffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[4] = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
-        drinkImageLabel[4].setBounds(50, 300, 100, 200);
-        add(drinkImageLabel[4]);
-
-        //특별 음료 이미지 불러오기
-        ImageIcon specialDrinkIcon = new ImageIcon("image/specialDrink.png");
-        Image specialDrinkOriginalImage = specialDrinkIcon.getImage();
-        Image specialDrinkResizedImage = specialDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[5] = new JLabel(new ImageIcon(specialDrinkResizedImage));
-        drinkImageLabel[5].setBounds(650, 300, 100, 200);
-        add(drinkImageLabel[5]);
+        for(int i = 0; i<6;i++) {
+            ImageIcon imageIcon = new ImageIcon(DrinkList.drinks.get(i).getImagePath());
+            Image originalImage = imageIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
+            drinkImageLabel[i] = new JLabel(new ImageIcon(resizedImage));
+            if(i<3) {
+                drinkImageLabel[i].setBounds(50+(i*300),40,100,200);
+            }
+            else {
+                drinkImageLabel[i].setBounds(50+((i%3)*300),300,100,200);
+            }
+            add(drinkImageLabel[i]);
+        }
 
 
         JLabel[] drinkStockLabel = new JLabel[6];  //음료 개수 표시

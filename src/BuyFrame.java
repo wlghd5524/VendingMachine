@@ -1,10 +1,8 @@
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -32,7 +30,7 @@ public class BuyFrame extends JFrame {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] temp = line.split(" ");
-                DrinkList.drinks.add(new Drink(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), temp[3]));
+                DrinkList.drinks.add(new Drink(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), temp[3]));  //생성자로 음료수 정보 초기화하고 Linked-list에 추가
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,7 +41,7 @@ public class BuyFrame extends JFrame {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] temp = line.split(" ");
-                MoneyList.moneyList.add(new Money(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));
+                MoneyList.moneyList.add(new Money(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));      //생성자로 돈 정보 초기화하고 Linked-list에 추가
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,53 +81,20 @@ public class BuyFrame extends JFrame {
         buyPanel.add(logoButton);
 
 
-        //물 이미지 불러오기
-        ImageIcon waterIcon = new ImageIcon("image/water.png");
-        Image waterOriginalImage = waterIcon.getImage();
-        Image waterResizedImage = waterOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[0] = new JLabel(new ImageIcon(waterResizedImage));
-        drinkImageLabel[0].setBounds(135, 40, 100, 200);
-        buyPanel.add(drinkImageLabel[0]);
+        //음료 이미지 불러오기
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
+            ImageIcon imageIcon = new ImageIcon(DrinkList.drinks.get(i).getImagePath());
+            Image originalImage = imageIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
+            drinkImageLabel[i] = new JLabel(new ImageIcon(resizedImage));
+            if (i < 3) {
+                drinkImageLabel[i].setBounds(135 + (i * 370), 40, 100, 200);
+            } else {
+                drinkImageLabel[i].setBounds(135 + ((i % 3) * 370), 370, 100, 200);
+            }
+            buyPanel.add(drinkImageLabel[i]);
+        }
 
-        //커피 이미지 불러오기
-        ImageIcon coffeeIcon = new ImageIcon("image/coffee.png");
-        Image coffeeOriginalImage = coffeeIcon.getImage();
-        Image coffeeResizedImage = coffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[1] = new JLabel(new ImageIcon(coffeeResizedImage));
-        drinkImageLabel[1].setBounds(510, 40, 100, 200);
-        buyPanel.add(drinkImageLabel[1]);
-
-        //이온 음료 이미지 불러오기
-        ImageIcon sportsDrinkIcon = new ImageIcon("image/sportsDrink.png");
-        Image sportsDrinkOriginalImage = sportsDrinkIcon.getImage();
-        Image sportsDrinkResizedImage = sportsDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[2] = new JLabel(new ImageIcon(sportsDrinkResizedImage));
-        drinkImageLabel[2].setBounds(880, 40, 100, 200);
-        buyPanel.add(drinkImageLabel[2]);
-
-        //탄산 음료 이미지 불러오기
-        ImageIcon sodaIcon = new ImageIcon("image/soda.png");
-        Image sodaOriginalImage = sodaIcon.getImage();
-        Image sodaResizedImage = sodaOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[3] = new JLabel(new ImageIcon(sodaResizedImage));
-        drinkImageLabel[3].setBounds(510, 370, 100, 200);
-        buyPanel.add(drinkImageLabel[3]);
-
-        //고급 커피 이미지 불러오기
-        ImageIcon premiumCoffeeIcon = new ImageIcon("image/premiumCoffee.png");
-        Image premiumCoffeeOriginalImage = premiumCoffeeIcon.getImage();
-        Image premiumCoffeeResizedImage = premiumCoffeeOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[4] = new JLabel(new ImageIcon(premiumCoffeeResizedImage));
-        drinkImageLabel[4].setBounds(135, 370, 100, 200);
-        buyPanel.add(drinkImageLabel[4]);
-
-        //특별 음료 이미지 불러오기
-        ImageIcon specialDrinkIcon = new ImageIcon("image/specialDrink.png");
-        Image specialDrinkOriginalImage = specialDrinkIcon.getImage();
-        Image specialDrinkResizedImage = specialDrinkOriginalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-        drinkImageLabel[5] = new JLabel(new ImageIcon(specialDrinkResizedImage));
-        drinkImageLabel[5].setBounds(880, 370, 100, 200);
-        buyPanel.add(drinkImageLabel[5]);
 
         //구매 가능 버튼 이미지 불러오기
         ImageIcon canBuyButton = new ImageIcon("image/can buy button.png");
@@ -185,7 +150,7 @@ public class BuyFrame extends JFrame {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
                     String formattedDate = formatter.format(today);
                     writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice());
-                    if(DrinkList.drinks.get(finalI).getStock() == 0){
+                    if (DrinkList.drinks.get(finalI).getStock() == 0) {
                         writer.write(" Sold Out");
                     }
                     writer.newLine();
@@ -218,64 +183,18 @@ public class BuyFrame extends JFrame {
             moneyButton[i].setBounds(50 + (i * 210), 900, 150, 100);
             moneyButton[i].setFont(textFont);
             buyPanel.add(moneyButton[i]);
+            int finalI = i;
+            moneyButton[i].addActionListener(e -> {
+                if (currentMoney + MoneyList.moneyList.get(finalI).getPrice() <= 7000) {
+                    insertMoneyCount[finalI]++;
+                    currentMoney += MoneyList.moneyList.get(finalI).getPrice();
+                    currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                    MoneyList.moneyList.get(finalI).setStock(MoneyList.moneyList.get(finalI).getStock() + 1);
+                    updateBuyButton();
+                    updateBuyButton();
+                }
+            });
         }
-
-        //10원 입력 버튼
-        moneyButton[0].addActionListener(e -> {
-            if (currentMoney + 10 <= 7000) {
-                insertMoneyCount[0]++;
-                currentMoney += 10;
-                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() + 1);
-                updateBuyButton();
-                updateBuyButton();
-            }
-        });
-
-        //50원 입력 버튼
-        moneyButton[1].addActionListener(e -> {
-            if (currentMoney + 50 <= 7000) {
-                insertMoneyCount[1]++;
-                currentMoney += 50;
-                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() + 1);
-                updateBuyButton();
-            }
-        });
-
-        //100원 입력 버튼
-        moneyButton[2].addActionListener(e -> {
-            if (currentMoney + 100 <= 7000) {
-                insertMoneyCount[2]++;
-                currentMoney += 100;
-                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() + 1);;
-                updateBuyButton();
-            }
-        });
-
-        //500원 입력 버튼
-        moneyButton[3].addActionListener(e -> {
-            if (currentMoney + 500 <= 7000) {
-                insertMoneyCount[3]++;
-                currentMoney += 500;
-                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() + 1);;
-                updateBuyButton();
-            }
-        });
-
-        //1000원 입력 버튼
-        moneyButton[4].addActionListener(e -> {
-            if (currentMoney + 1000 <= 7000 && insertMoneyCount[4] < 5) {
-                insertMoneyCount[4]++;
-                currentMoney += 1000;
-                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() + 1);;
-                updateBuyButton();
-            }
-
-        });
 
 
         //반환 버튼
@@ -293,7 +212,8 @@ public class BuyFrame extends JFrame {
         returnButton.addActionListener(e -> {
             while (currentMoney > 0) {
                 if (currentMoney >= 1000) {
-                    MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);;
+                    MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);
+                    ;
                     currentMoney -= 1000;
                 } else if (currentMoney >= 500) {
                     if (MoneyList.moneyList.get(3).getStock() == 0) {

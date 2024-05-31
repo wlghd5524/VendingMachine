@@ -11,7 +11,6 @@ public class AdminFrame extends JFrame {
     Font textFont = new Font("Arial", Font.BOLD, 40);
     static JPanel adminPanel;
 
-
     public AdminFrame() {
         //비밀번호 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
@@ -160,13 +159,8 @@ public class AdminFrame extends JFrame {
         });
 
         //음료 정보 변경 화면
-        JPanel modifyDrinkPanel = new JPanel();
-        modifyDrinkPanel.setBackground(new Color(252, 255, 216));
-        modifyDrinkPanel.setSize(900, 600);
-        modifyDrinkPanel.setLayout(null);
+        JPanel modifyDrinkPanel = new ModifyDrinkPanel();
         add(modifyDrinkPanel);
-        modifyDrinkPanel.setVisible(false);
-
         //음료 정보 변경 버튼
         JButton modifyDrinkButton = new JButton("<html><div style='text-align: center;'>음료<br>정보 변경</div></html>");
         modifyDrinkButton.setFont(textFont);

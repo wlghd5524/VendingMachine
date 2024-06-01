@@ -34,6 +34,7 @@ public class DrinkSalesReportPanel extends JPanel {
             AdminFrame.adminPanel.setVisible(true);
         });
 
+        int[] totalSalesAmount = new int[6];
         int[][][][] dailySalesAmount = new int[10][12][31][6];  //일간 매출 [년][월][일][음료수]
         int[][][] monthSalesAmount = new int[10][12][6];        //월간 매출 [년][월][음료수]
 
@@ -55,6 +56,7 @@ public class DrinkSalesReportPanel extends JPanel {
                     if (drink.getName().equals(drinkName)) {
                         dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
                         monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
+                        totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;
                     }
                 }
 
@@ -70,10 +72,17 @@ public class DrinkSalesReportPanel extends JPanel {
         yearLabel.setFont(textFont);
         monthLabel.setFont(textFont);
         dayLabel.setFont(textFont);
-        yearLabel.setBounds(180, 200, 100, 50);
-        monthLabel.setBounds(380, 200, 100, 50);
-        dayLabel.setBounds(580, 200, 100, 50);
+        yearLabel.setBounds(180, 100, 100, 50);
+        monthLabel.setBounds(380, 100, 100, 50);
+        dayLabel.setBounds(580, 100, 100, 50);
 
+
+        //총 매출 라벨
+        JLabel totalResultLabel = new JLabel();
+        totalResultLabel.setFont(textFont);
+        totalResultLabel.setVisible(false);
+        totalResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        totalResultLabel.setBounds(0, 200, 900, 50);
 
         //일별 매출 라벨
         JLabel dayResultLabel = new JLabel();
@@ -106,10 +115,10 @@ public class DrinkSalesReportPanel extends JPanel {
         monthComboBox.setFont(comboBoxFont);
         dayComboBox.setFont(comboBoxFont);
         drinkComboBox.setFont(comboBoxFont);
-        yearComboBox.setBounds(20, 200, 150, 50);
-        monthComboBox.setBounds(220, 200, 150, 50);
-        dayComboBox.setBounds(420, 200, 150, 50);
-        drinkComboBox.setBounds(620, 200, 150, 50);
+        yearComboBox.setBounds(20, 100, 150, 50);
+        monthComboBox.setBounds(220, 100, 150, 50);
+        dayComboBox.setBounds(420, 100, 150, 50);
+        drinkComboBox.setBounds(620, 100, 150, 50);
         LocalDate localDate = LocalDate.now();
         yearComboBox.setSelectedItem(String.valueOf(localDate.getYear()));
         monthComboBox.setSelectedItem(String.valueOf(localDate.getMonthValue()));
@@ -118,7 +127,7 @@ public class DrinkSalesReportPanel extends JPanel {
         //날짜 선택 버튼
         JButton selectButton = new JButton("선택");
         selectButton.setFont(textFont);
-        selectButton.setBounds(780, 200, 100, 50);
+        selectButton.setBounds(780, 100, 100, 50);
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
             int month = Integer.parseInt((String) monthComboBox.getSelectedItem());
@@ -132,9 +141,10 @@ public class DrinkSalesReportPanel extends JPanel {
                     drinkPrice = drink.getPrice();
                 }
             }
-
+            totalResultLabel.setText(drinkName+ " 총 매출 : " + totalSalesAmount[drinkIndex] / drinkPrice + "개 " + totalSalesAmount[drinkIndex] + "원");
             dayResultLabel.setText(drinkName + " " + year + "년 " + month + "월 " + day + "일 매출 : " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] / drinkPrice + "개 " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] + "원");
             monthResultLabel.setText(drinkName + " " + year + "년 " + month + "월 매출 : " + monthSalesAmount[year - 2020][month - 1][drinkIndex] / drinkPrice + "개 " + monthSalesAmount[year - 2020][month - 1][drinkIndex] + "원");
+            totalResultLabel.setVisible(true);
             dayResultLabel.setVisible(true);
             monthResultLabel.setVisible(true);
         });
@@ -147,6 +157,7 @@ public class DrinkSalesReportPanel extends JPanel {
         add(dayComboBox);
         add(dayLabel);
         add(selectButton);
+        add(totalResultLabel);
         add(dayResultLabel);
         add(monthResultLabel);
     }

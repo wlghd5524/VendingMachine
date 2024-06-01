@@ -69,6 +69,14 @@ public class AdminFrame extends JFrame {
                 incorrectPasswordLabel.setVisible(true);
             }
         });
+        // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
+        passwordField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "submit");
+        passwordField.getActionMap().put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminCheckButton.doClick();
+            }
+        });
         loginPanel.add(adminCheckButton);
         loginPanel.add(passwordField);
 

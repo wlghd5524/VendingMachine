@@ -31,16 +31,15 @@ public class AddDrinkPanel extends JPanel {
 
         //음료 이미지
         JLabel[] drinkImageLabel = new JLabel[6];
-        for(int i = 0; i<6;i++) {
+        for (int i = 0; i < 6; i++) {
             ImageIcon imageIcon = new ImageIcon(DrinkList.drinks.get(i).getImagePath());
             Image originalImage = imageIcon.getImage();
             Image resizedImage = originalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
             drinkImageLabel[i] = new JLabel(new ImageIcon(resizedImage));
-            if(i<3) {
-                drinkImageLabel[i].setBounds(50+(i*300),40,100,200);
-            }
-            else {
-                drinkImageLabel[i].setBounds(50+((i%3)*300),300,100,200);
+            if (i < 3) {
+                drinkImageLabel[i].setBounds(50 + (i * 300), 40, 100, 200);
+            } else {
+                drinkImageLabel[i].setBounds(50 + ((i % 3) * 300), 300, 100, 200);
             }
             add(drinkImageLabel[i]);
         }

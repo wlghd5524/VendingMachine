@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.BufferedWriter;
@@ -115,6 +116,14 @@ public class passwordChangePanel extends JPanel {
                     confirmPasswordField.setForeground(Color.GRAY);
                     confirmPasswordField.setEchoChar((char) 0);
                 }
+            }
+        });
+        // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
+        confirmPasswordField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "submit");
+        confirmPasswordField.getActionMap().put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passwordChangeButton.doClick();
             }
         });
         passwordChangeButton.addActionListener(e -> {

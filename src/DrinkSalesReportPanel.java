@@ -141,7 +141,7 @@ public class DrinkSalesReportPanel extends JPanel {
                     drinkPrice = drink.getPrice();
                 }
             }
-            totalResultLabel.setText(drinkName+ " 총 매출 : " + totalSalesAmount[drinkIndex] / drinkPrice + "개 " + totalSalesAmount[drinkIndex] + "원");
+            totalResultLabel.setText(drinkName + " 총 매출 : " + (totalSalesAmount[drinkIndex] / drinkPrice) + "개 " + totalSalesAmount[drinkIndex] + "원");
             dayResultLabel.setText(drinkName + " " + year + "년 " + month + "월 " + day + "일 매출 : " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] / drinkPrice + "개 " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] + "원");
             monthResultLabel.setText(drinkName + " " + year + "년 " + month + "월 매출 : " + monthSalesAmount[year - 2020][month - 1][drinkIndex] / drinkPrice + "개 " + monthSalesAmount[year - 2020][month - 1][drinkIndex] + "원");
             totalResultLabel.setVisible(true);

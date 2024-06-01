@@ -30,7 +30,7 @@ public class passwordChangePanel extends JPanel {
         add(backButton);
         backButton.addActionListener(e -> {
             setVisible(false);
-            AdminFrame.adminPanel.setVisible(true);
+            AdminFrame.adminMenuPanel.setVisible(true);
         });
 
 
@@ -151,7 +151,7 @@ public class passwordChangePanel extends JPanel {
                                 ex.printStackTrace();
                             }
                             setVisible(false);
-                            AdminFrame.adminPanel.setVisible(true);
+                            AdminFrame.adminMenuPanel.setVisible(true);
                         } else {
                             passwordErrorLabel.setBounds(20, 10, 900, 100);
                             passwordErrorLabel.setText("비밀번호는 알파벳, 숫자, 특수문자를 포함해야 합니다.");

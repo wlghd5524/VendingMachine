@@ -26,7 +26,7 @@ public class CollectMoneyPanel extends JPanel {
         add(backButton);
         backButton.addActionListener(e -> {
             setVisible(false);
-            AdminFrame.adminPanel.setVisible(true);
+            AdminFrame.adminMenuPanel.setVisible(true);
         });
 
 

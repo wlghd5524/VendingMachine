@@ -31,7 +31,7 @@ public class DrinkSalesReportPanel extends JPanel {
         add(backButton);
         backButton.addActionListener(e -> {
             setVisible(false);
-            AdminFrame.adminPanel.setVisible(true);
+            AdminFrame.adminMenuPanel.setVisible(true);
         });
 
         int[] totalSalesAmount = new int[6];

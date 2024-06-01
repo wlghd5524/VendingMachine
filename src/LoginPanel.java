@@ -1,0 +1,86 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LoginPanel extends JPanel {
+    Font textFont = new Font("Arial", Font.BOLD, 40);
+
+    public LoginPanel() {
+        setLayout(null);
+        setBackground(new Color(252, 255, 216));
+        setSize(900, 600);
+        setVisible(true);
+
+        //비밀번호 불러오기
+        try (BufferedReader br = new BufferedReader(new FileReader("Password.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                AdminFrame.password = line;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //로그인 화면
+        JPasswordField passwordField = new JPasswordField("비밀번호 입력");
+        passwordField.setForeground(Color.GRAY);
+        JButton adminCheckButton = new JButton("확인");
+        passwordField.setBounds(250, 200, 400, 100);
+        adminCheckButton.setBounds(250, 300, 400, 100);
+        passwordField.setFont(textFont);
+        adminCheckButton.setFont(textFont);
+        JLabel incorrectPasswordLabel = new JLabel("비밀번호가 알맞지 않습니다.");
+        incorrectPasswordLabel.setFont(textFont);
+        incorrectPasswordLabel.setBounds(220, 100, 500, 100);
+        incorrectPasswordLabel.setVisible(false);
+        add(incorrectPasswordLabel);
+        adminCheckButton.addActionListener(e -> {
+            String insertedPassword = String.valueOf(passwordField.getPassword());
+            if (insertedPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
+                insertedPassword = HangulToQwerty.convertHangulToQwerty(insertedPassword);
+            }
+            if (insertedPassword.equals(AdminFrame.password)) {
+                setVisible(false);
+                AdminFrame.adminMenuPanel.setVisible(true);
+            } else {
+                incorrectPasswordLabel.setVisible(true);
+            }
+        });
+        // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
+        passwordField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "submit");
+        passwordField.getActionMap().put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminCheckButton.doClick();
+            }
+        });
+        add(adminCheckButton);
+        add(passwordField);
+
+        // 비밀번호 입력 칸에 아무 것도 입력하지 않았을 때 힌트 문자
+        passwordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (String.valueOf(passwordField.getPassword()).equals("비밀번호 입력")) {
+                    passwordField.setText("");
+                    passwordField.setForeground(Color.BLACK);
+                    passwordField.setEchoChar('⦁');
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (passwordField.getPassword().length == 0) {
+                    passwordField.setText("비밀번호 입력");
+                    passwordField.setForeground(Color.GRAY);
+                    passwordField.setEchoChar((char) 0);
+                }
+            }
+        });
+    }
+}

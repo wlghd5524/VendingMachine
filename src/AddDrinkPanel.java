@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class AddDrinkPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
@@ -25,7 +24,7 @@ public class AddDrinkPanel extends JPanel {
         add(backButton);
         backButton.addActionListener(e -> {
             setVisible(false);
-            AdminFrame.adminPanel.setVisible(true);
+            AdminFrame.adminMenuPanel.setVisible(true);
         });
 
 

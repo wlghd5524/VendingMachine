@@ -29,7 +29,7 @@ public class ModifyDrinkPanel extends JPanel {
         add(backButton);
         backButton.addActionListener(e -> {
             setVisible(false);
-            AdminFrame.adminPanel.setVisible(true);
+            AdminFrame.adminMenuPanel.setVisible(true);
         });
 
 

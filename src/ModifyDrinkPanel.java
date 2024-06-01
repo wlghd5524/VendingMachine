@@ -17,11 +17,7 @@ public class ModifyDrinkPanel extends JPanel {
         setVisible(false);
 
         //뒤로 가기 버튼
-        ImageIcon backIcon = new ImageIcon("image/back.png");
-        Image backOriginalImage = backIcon.getImage();
-        Image backResizedImage = backOriginalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon backIconResized = new ImageIcon(backResizedImage);
-        JButton backButton = new JButton(backIconResized);
+        JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         backButton.setBounds(0, 0, 50, 50);
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
@@ -36,10 +32,7 @@ public class ModifyDrinkPanel extends JPanel {
         //음료 이미지
         JLabel[] drinkImageLabel = new JLabel[6];
         for (int i = 0; i < 6; i++) {
-            ImageIcon imageIcon = new ImageIcon(DrinkList.drinks.get(i).getImagePath());
-            Image originalImage = imageIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-            drinkImageLabel[i] = new JLabel(new ImageIcon(resizedImage));
+            drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
                 drinkImageLabel[i].setBounds(50 + (i * 300), 40, 100, 200);
             } else {

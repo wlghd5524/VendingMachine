@@ -18,11 +18,7 @@ public class passwordChangePanel extends JPanel {
         setVisible(false);
 
         //뒤로 가기 버튼
-        ImageIcon backIcon = new ImageIcon("image/back.png");
-        Image backOriginalImage = backIcon.getImage();
-        Image backResizedImage = backOriginalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon backIconResized = new ImageIcon(backResizedImage);
-        JButton backButton = new JButton(backIconResized);
+        JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         backButton.setBounds(0, 0, 50, 50);
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);

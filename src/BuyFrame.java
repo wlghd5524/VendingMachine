@@ -7,29 +7,28 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class BuyFrame extends JFrame {
-    private int currentMoney = 0;  //현재 입력된 돈
-    private final JLabel currentMoneyLabel;
-    static int pressLogoCount = 0; //로고를 누른 횟수
-    private final JButton[] canBuyButtons = new JButton[6];
-    private final JButton[] canNotBuyButtons = new JButton[6];
-    private int[] insertMoneyCount = new int[5];
-    static JLabel[] drinkImageLabel = new JLabel[6];
-    Font textFont = new Font("Arial", Font.BOLD, 40);
+    private int currentMoney = 0;                                   //현재 입력된 돈
+    private final JLabel currentMoneyLabel;                         //현재 입력된 돈을 알려주는 라벨
+    static int pressLogoCount = 0;                                  //로고를 누른 횟수
+    private final JButton[] canBuyButtons = new JButton[6];         //각 음료의 구매 가능 버튼
+    private final JButton[] canNotBuyButtons = new JButton[6];      //각 음료의 구매 불가능 버튼
+    private int[] insertMoneyCount = new int[5];                    //입력된 각 화폐 개수
+    static JLabel[] drinkImageLabel = new JLabel[6];                //음료 이미지 라벨
+    Font textFont = new Font("Arial", Font.BOLD, 40);    //텍스트 폰트
 
     public BuyFrame() throws IOException {
         setTitle("Vending Machine");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setSize(1100, 1100);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             //창을 닫으면 프로그램 종료 설정
+        setResizable(false);                                        //창 크기 변경 불가
+        setSize(1100, 1100);                           //창 크기 설정
 
-        getContentPane().setBackground(new Color(252, 255, 216));
+        getContentPane().setBackground(new Color(252, 255, 216));   //백그라운드 색 변경
         setLayout(null);
-
         //음료 정보 불러오기
         try (BufferedReader br = new BufferedReader(new FileReader("Drinks.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] temp = line.split(" ");
+                String[] temp = line.split(" ");        //공백 문자를 기준으로 음료수 정보를 나눠서 temp에 저장. temp[0]:음료수 이름 temp[1]:가격 temp[2]:재고 temp[3]:이미지 경로
                 DrinkList.drinks.add(new Drink(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), temp[3]));  //생성자로 음료수 정보 초기화하고 Linked-list에 추가
             }
         } catch (IOException e) {
@@ -40,7 +39,7 @@ public class BuyFrame extends JFrame {
         try (BufferedReader br = new BufferedReader(new FileReader("Money.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] temp = line.split(" ");
+                String[] temp = line.split(" ");      //공백 문자를 기준으로 거스름돈 정보를 나눠서 temp에 저장. temp[0]:이름 temp[1]:가격 temp[2]:재고
                 MoneyList.moneyList.add(new Money(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));      //생성자로 돈 정보 초기화하고 Linked-list에 추가
             }
         } catch (IOException e) {
@@ -48,7 +47,7 @@ public class BuyFrame extends JFrame {
         }
 
 
-        //판매 패널
+        //판매 페이지 패널
         JPanel buyPanel = new JPanel();
         buyPanel.setLayout(null);
         buyPanel.setSize(1100, 1100);
@@ -63,11 +62,7 @@ public class BuyFrame extends JFrame {
         buyPanel.add(currentMoneyLabel);
 
         //로고 이미지 불러오기
-        ImageIcon logoIcon = new ImageIcon("image/logo.png");
-        Image logoOriginalImage = logoIcon.getImage();
-        Image logoResizedImage = logoOriginalImage.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        ImageIcon logoIconResized = new ImageIcon(logoResizedImage);
-        JButton logoButton = new JButton(logoIconResized);
+        JButton logoButton = new JButton(new ImageIcon(new ImageIcon("image/logo.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
         logoButton.setBounds(50, 700, 150, 150);
         logoButton.setBorderPainted(false);
         logoButton.setContentAreaFilled(false);
@@ -83,10 +78,7 @@ public class BuyFrame extends JFrame {
 
         //음료 이미지 불러오기
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
-            ImageIcon imageIcon = new ImageIcon(DrinkList.drinks.get(i).getImagePath());
-            Image originalImage = imageIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(100, 200, Image.SCALE_SMOOTH);
-            drinkImageLabel[i] = new JLabel(new ImageIcon(resizedImage));
+            drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
                 drinkImageLabel[i].setBounds(135 + (i * 370), 40, 100, 200);
             } else {
@@ -97,17 +89,10 @@ public class BuyFrame extends JFrame {
 
 
         //구매 가능 버튼 이미지 불러오기
-        ImageIcon canBuyButton = new ImageIcon("image/can buy button.png");
-        Image canBuyButtonOriginalImage = canBuyButton.getImage();
-        Image canBuyButtonResizedImage = canBuyButtonOriginalImage.getScaledInstance(250, 50, Image.SCALE_SMOOTH);
-        ImageIcon canBuyButtonResizedImageIcon = new ImageIcon(canBuyButtonResizedImage);
+        ImageIcon canBuyButtonIcon = new ImageIcon(new ImageIcon("image/can buy button.png").getImage().getScaledInstance(250, 50, Image.SCALE_SMOOTH));
 
         //구매 불가 버튼 이미지 불러오기
-        ImageIcon canNotBuyButton = new ImageIcon("image/can not buy button.png");
-        Image canNotBuyButtonOriginalImage = canNotBuyButton.getImage();
-        Image canNotBuyButtonResizedImage = canNotBuyButtonOriginalImage.getScaledInstance(250, 50, Image.SCALE_SMOOTH);
-        ImageIcon canNotBuyButtonResizedImageIcon = new ImageIcon(canNotBuyButtonResizedImage);
-
+        ImageIcon canNotBuyButtonIcon = new ImageIcon(new ImageIcon("image/can not buy button.png").getImage().getScaledInstance(250, 50, Image.SCALE_SMOOTH));
 
         //가격 표시
         JLabel[] priceLabels = new JLabel[6];
@@ -124,7 +109,7 @@ public class BuyFrame extends JFrame {
 
         //구매 가능 버튼 이미지 불러오기
         for (int i = 0; i < 6; i++) {
-            canBuyButtons[i] = new JButton(canBuyButtonResizedImageIcon);
+            canBuyButtons[i] = new JButton(canBuyButtonIcon);
             if (i < 3) {
                 canBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
             } else {
@@ -162,7 +147,7 @@ public class BuyFrame extends JFrame {
 
         //구매 불가 표시
         for (int i = 0; i < 6; i++) {
-            canNotBuyButtons[i] = new JButton(canNotBuyButtonResizedImageIcon);
+            canNotBuyButtons[i] = new JButton(canNotBuyButtonIcon);
             if (i < 3) {
                 canNotBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
             } else {
@@ -198,11 +183,7 @@ public class BuyFrame extends JFrame {
 
 
         //반환 버튼
-        ImageIcon returnButtonImage = new ImageIcon("image/returnButton.png");
-        Image returnButtonOriginalImage = returnButtonImage.getImage();
-        Image returnButtonResizedImage = returnButtonOriginalImage.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        ImageIcon returnButtonResizedImageIcon = new ImageIcon(returnButtonResizedImage);
-        JButton returnButton = new JButton(returnButtonResizedImageIcon);
+        JButton returnButton = new JButton(new ImageIcon(new ImageIcon("image/returnButton.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
         returnButton.setBounds(900, 700, 150, 150);
         returnButton.setBorderPainted(false);
         returnButton.setContentAreaFilled(false);

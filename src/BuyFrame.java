@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -134,18 +135,36 @@ public class BuyFrame extends JFrame {
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
                 DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);  //재고 줄이기
                 updateBuyButton();
-                //파일에 매출 로그 추가
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter("SalesReport.txt", true))) {
+                //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
+                try {
                     LocalDateTime today = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
-                    String formattedDate = formatter.format(today);
-                    writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice());
-                    if (DrinkList.drinks.get(finalI).getStock() == 0) {
-                        writer.write(" Sold Out");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+                    String folderPath = "salesReport/"+today.format(formatter)+"년";
+                    File folder = new File(folderPath);
+                    if (!folder.exists()) {
+                        folder.mkdirs(); // 연도별 폴더 생성
                     }
-                    writer.newLine();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                    formatter = DateTimeFormatter.ofPattern("MM");
+                    folderPath += "/"+today.format(formatter)+"월";
+                    folder = new File(folderPath);
+                    if (!folder.exists()) {
+                        folder.mkdirs(); // 월별 폴더 생성
+                    }
+                    formatter = DateTimeFormatter.ofPattern("dd");
+                    String fileName = folderPath+"/"+today.format(formatter)+"일.txt";
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+                        formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
+                        String formattedDate = formatter.format(today);
+                        writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice());
+                        if (DrinkList.drinks.get(finalI).getStock() == 0) {
+                            writer.write(" Sold Out");
+                        }
+                        writer.newLine();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
             });
         }

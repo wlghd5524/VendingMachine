@@ -22,13 +22,14 @@ public class PasswordChangePanel extends JPanel {
         add(backButton);
 
 
+        //비밀번호 입력 칸
         JPasswordField currentPasswordField = new JPasswordField("현재 비밀번호 입력");
         currentPasswordField.setFont(textFont);
         currentPasswordField.setForeground(Color.GRAY);
-        JPasswordField newPasswordField = new JPasswordField();
+        JPasswordField newPasswordField = new JPasswordField("새로운 비밀번호 입력");
         newPasswordField.setFont(textFont);
         newPasswordField.setForeground(Color.GRAY);
-        JPasswordField confirmPasswordField = new JPasswordField();
+        JPasswordField confirmPasswordField = new JPasswordField("비밀번호 확인");
         confirmPasswordField.setFont(textFont);
         confirmPasswordField.setForeground(Color.GRAY);
         JButton passwordChangeButton = new JButton("비밀번호 변경");
@@ -49,64 +50,11 @@ public class PasswordChangePanel extends JPanel {
         add(titleLabel);
         titleLabel.setVisible(true);
 
-        // 비밀번호 입력 칸에 아무 것도 입력하지 않았을 때 힌트 문자
-        currentPasswordField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (String.valueOf(currentPasswordField.getPassword()).equals("현재 비밀번호 입력")) {
-                    currentPasswordField.setText("");
-                    currentPasswordField.setForeground(Color.BLACK);
-                    currentPasswordField.setEchoChar('⦁');
-                }
-            }
+        LoginPanel.addFocusListenerToPasswordField(currentPasswordField,"현재 비밀번호 입력");
+        LoginPanel.addFocusListenerToPasswordField(newPasswordField,"새로운 비밀번호 입력");
+        LoginPanel.addFocusListenerToPasswordField(confirmPasswordField,"비밀번호 확인");
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (currentPasswordField.getPassword().length == 0) {
-                    currentPasswordField.setText("현재 비밀번호 입력");
-                    currentPasswordField.setForeground(Color.GRAY);
-                    currentPasswordField.setEchoChar((char) 0);
-                }
-            }
-        });
-        newPasswordField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (String.valueOf(newPasswordField.getPassword()).equals("새로운 비밀번호 입력")) {
-                    newPasswordField.setText("");
-                    newPasswordField.setForeground(Color.BLACK);
-                    newPasswordField.setEchoChar('⦁');
-                }
-            }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (newPasswordField.getPassword().length == 0) {
-                    newPasswordField.setText("새로운 비밀번호 입력");
-                    newPasswordField.setForeground(Color.GRAY);
-                    newPasswordField.setEchoChar((char) 0);
-                }
-            }
-        });
-        confirmPasswordField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (String.valueOf(confirmPasswordField.getPassword()).equals("비밀번호 확인")) {
-                    confirmPasswordField.setText("");
-                    confirmPasswordField.setForeground(Color.BLACK);
-                    confirmPasswordField.setEchoChar('⦁');
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (confirmPasswordField.getPassword().length == 0) {
-                    confirmPasswordField.setText("비밀번호 확인");
-                    confirmPasswordField.setForeground(Color.GRAY);
-                    confirmPasswordField.setEchoChar((char) 0);
-                }
-            }
-        });
         // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
         confirmPasswordField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "submit");
         confirmPasswordField.getActionMap().put("submit", new AbstractAction() {
@@ -158,5 +106,7 @@ public class PasswordChangePanel extends JPanel {
             }
         });
     }
+
+
 
 }

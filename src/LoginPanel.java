@@ -24,6 +24,7 @@ public class LoginPanel extends JPanel {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"비밀번호 파일을 불러올 수 없습니다. 관리자에게 문의해주세요.");
         }
 
         //로그인 화면
@@ -63,11 +64,17 @@ public class LoginPanel extends JPanel {
         add(adminCheckButton);
         add(passwordField);
 
-        // 비밀번호 입력 칸에 아무 것도 입력하지 않았을 때 힌트 문자
+        addFocusListenerToPasswordField(passwordField,"비밀번호 입력");
+    }
+    public static void addFocusListenerToPasswordField(JPasswordField passwordField, String hintText) {
+        passwordField.setText(hintText);
+        passwordField.setForeground(Color.GRAY);
+        passwordField.setEchoChar((char) 0);
+
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (String.valueOf(passwordField.getPassword()).equals("비밀번호 입력")) {
+                if (String.valueOf(passwordField.getPassword()).equals(hintText)) {
                     passwordField.setText("");
                     passwordField.setForeground(Color.BLACK);
                     passwordField.setEchoChar('⦁');
@@ -77,7 +84,7 @@ public class LoginPanel extends JPanel {
             @Override
             public void focusLost(FocusEvent e) {
                 if (passwordField.getPassword().length == 0) {
-                    passwordField.setText("비밀번호 입력");
+                    passwordField.setText(hintText);
                     passwordField.setForeground(Color.GRAY);
                     passwordField.setEchoChar((char) 0);
                 }

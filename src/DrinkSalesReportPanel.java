@@ -1,12 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class DrinkSalesReportPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
@@ -28,30 +31,53 @@ public class DrinkSalesReportPanel extends JPanel {
 
 
         //매출 불러오기
-        try (BufferedReader br = new BufferedReader(new FileReader("SalesReport.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null && !line.isEmpty()) {
-                String[] temp = line.split(" ");
-                String date = temp[0];
-                String drinkName = temp[2];
-                int drinkPrice = Integer.parseInt(temp[3]);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate dateTime = LocalDate.parse(date, formatter);
-                int recordedYear = dateTime.getYear();
-                int recordedMonth = dateTime.getMonthValue();
-                int recordedDay = dateTime.getDayOfMonth();
-                for (Drink drink : DrinkList.drinks) {
-                    if (drink.getName().equals(drinkName)) {
-                        dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
-                        monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
-                        totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;
+        Queue<File> fileQueue = new LinkedList<>();  //매출 파일을 저장할 큐
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        //매출 파일을 불러와서 큐에 저장
+        for(int i = 2020;i<=now.getYear();i++) {
+            for(int j = 1;j<=12;j++) {
+                for(int k = 1;k<=31;k++) {
+                    String strI = String.format("%02d",i);
+                    String strJ = String.format("%02d",j);
+                    String strK = String.format("%02d",k);
+                    File file = new File("salesReport/"+strI+"년/"+strJ+"월/"+strK+"일.txt");
+                    if(file.exists()) {
+                        fileQueue.add(file);
                     }
                 }
-
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        //큐에서 순서대로 꺼내면서 매출 계산
+        while(!fileQueue.isEmpty()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
+                String line;
+                while ((line = br.readLine()) != null && !line.isEmpty()) {
+                    String[] temp = line.split(" ");
+                    String date = temp[0];
+                    String drinkName = temp[2];
+                    int drinkPrice = Integer.parseInt(temp[3]);
+                    LocalDate dateTime = LocalDate.parse(date, formatter);
+                    int recordedYear = dateTime.getYear();
+                    int recordedMonth = dateTime.getMonthValue();
+                    int recordedDay = dateTime.getDayOfMonth();
+                    for (Drink drink : DrinkList.drinks) {
+                        if (drink.getName().equals(drinkName)) {
+                            dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
+                            monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
+                            totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "매출 파일을 읽을 수 없습니다. 관리자 메뉴로 돌아갑니다.");
+                setVisible(false);
+                AdminFrame.adminMenuPanel.setVisible(true);
+            }
+        }
+
 
         //날짜 선택 라벨
         JLabel yearLabel = new JLabel("년");

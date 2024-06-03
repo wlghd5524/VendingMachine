@@ -5,13 +5,14 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class BuyFrame extends JFrame {
-    private int currentMoney = 0;                                   //현재 입력된 돈
+    private static int currentMoney = 0;                                   //현재 입력된 돈
     private final JLabel currentMoneyLabel;                         //현재 입력된 돈을 알려주는 라벨
     static int pressLogoCount = 0;                                  //로고를 누른 횟수
-    private final JButton[] canBuyButtons = new JButton[6];         //각 음료의 구매 가능 버튼
-    private final JButton[] canNotBuyButtons = new JButton[6];      //각 음료의 구매 불가능 버튼
+    private static final JButton[] canBuyButtons = new JButton[6];         //각 음료의 구매 가능 버튼
+    private static final JButton[] canNotBuyButtons = new JButton[6];      //각 음료의 구매 불가능 버튼
     private int[] insertMoneyCount = new int[5];                    //입력된 각 화폐 개수
     static JLabel[] drinkImageLabel = new JLabel[6];                //음료 이미지 라벨
     Font textFont = new Font("Arial", Font.BOLD, 40);    //텍스트 폰트
@@ -33,6 +34,8 @@ public class BuyFrame extends JFrame {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "음료수 정보를 파일에서 불러올 수 없습니다. 프로그램을 종료합니다.");
+            System.exit(0);
         }
 
         //거스름돈 정보 불러오기
@@ -44,6 +47,8 @@ public class BuyFrame extends JFrame {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "거스름돈 정보를 파일에서 불러올 수 없습니다. 프로그램을 종료합니다.");
+            System.exit(0);
         }
 
 
@@ -95,8 +100,8 @@ public class BuyFrame extends JFrame {
         ImageIcon canNotBuyButtonIcon = new ImageIcon(new ImageIcon("image/can not buy button.png").getImage().getScaledInstance(250, 50, Image.SCALE_SMOOTH));
 
         //가격 표시
-        JLabel[] priceLabels = new JLabel[6];
-        for (int i = 0; i < 6; i++) {
+        JLabel[] priceLabels = new JLabel[DrinkList.drinks.size()];
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             priceLabels[i] = new JLabel(DrinkList.drinks.get(i).getPrice() + "원");
             if (i < 3) {   //첫번째 줄 음료 가격
                 priceLabels[i].setBounds(140 + (i * 370), 240, 120, 50);
@@ -108,7 +113,7 @@ public class BuyFrame extends JFrame {
         }
 
         //구매 가능 버튼 이미지 불러오기
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             canBuyButtons[i] = new JButton(canBuyButtonIcon);
             if (i < 3) {
                 canBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
@@ -121,15 +126,15 @@ public class BuyFrame extends JFrame {
             buyPanel.add(canBuyButtons[i]);
         }
 
-        //구매 가능 버튼을 눌렀을 때 이벤트
-        for (int i = 0; i < 6; i++) {
+        //구매 버튼을 눌렀을 때 이벤트
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             int finalI = i;
             canBuyButtons[i].addActionListener(e -> {
                 currentMoney -= DrinkList.drinks.get(finalI).getPrice();
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);
+                DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);  //재고 줄이기
                 updateBuyButton();
-                //매출 추가
+                //파일에 매출 로그 추가
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("SalesReport.txt", true))) {
                     LocalDateTime today = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
@@ -146,7 +151,7 @@ public class BuyFrame extends JFrame {
         }
 
         //구매 불가 표시
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             canNotBuyButtons[i] = new JButton(canNotBuyButtonIcon);
             if (i < 3) {
                 canNotBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
@@ -160,26 +165,52 @@ public class BuyFrame extends JFrame {
         }
         updateBuyButton();
 
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
+            int finalI = i;
+            canNotBuyButtons[i].addActionListener(e -> {
+                if (DrinkList.drinks.get(finalI).getStock() == 0) {
+                    JOptionPane.showMessageDialog(null, "품절입니다.");
+                } else if (DrinkList.drinks.get(finalI).getPrice() > currentMoney) {
+                    JOptionPane.showMessageDialog(null, "잔액이 부족합니다.");
+                }
+            });
+        }
+
 
         //화폐 입력 버튼
-        JButton[] moneyButton = new JButton[5];
-        for (int i = 0; i < 5; i++) {
+        JButton[] moneyButton = new JButton[MoneyList.moneyList.size()];
+        for (int i = 0; i < MoneyList.moneyList.size(); i++) {
             moneyButton[i] = new JButton(MoneyList.moneyList.get(i).getName());
             moneyButton[i].setBounds(50 + (i * 210), 900, 150, 100);
             moneyButton[i].setFont(textFont);
             buyPanel.add(moneyButton[i]);
             int finalI = i;
-            moneyButton[i].addActionListener(e -> {
-                if (currentMoney + MoneyList.moneyList.get(finalI).getPrice() <= 7000) {
-                    insertMoneyCount[finalI]++;
-                    currentMoney += MoneyList.moneyList.get(finalI).getPrice();
-                    currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-                    MoneyList.moneyList.get(finalI).setStock(MoneyList.moneyList.get(finalI).getStock() + 1);
-                    updateBuyButton();
-                    updateBuyButton();
-                }
-            });
+            if (finalI < 4) {
+                moneyButton[i].addActionListener(e -> {
+                    if (currentMoney + MoneyList.moneyList.get(finalI).getPrice() <= 7000) {
+                        insertMoneyCount[finalI]++;
+                        currentMoney += MoneyList.moneyList.get(finalI).getPrice();
+                        currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                        MoneyList.moneyList.get(finalI).setStock(MoneyList.moneyList.get(finalI).getStock() + 1);
+                        updateBuyButton();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "돈은 총 7000원까지만 넣을 수 있습니다.");
+                    }
+                });
+            }
+
         }
+        moneyButton[4].addActionListener(e -> {
+            if (currentMoney + MoneyList.moneyList.get(4).getPrice() <= 5000) {
+                insertMoneyCount[4]++;
+                currentMoney += MoneyList.moneyList.get(4).getPrice();
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() + 1);
+                updateBuyButton();
+            } else {
+                JOptionPane.showMessageDialog(null, "지폐는 총 5000원까지만 넣을 수 있습니다.");
+            }
+        });
 
 
         //반환 버튼
@@ -192,41 +223,30 @@ public class BuyFrame extends JFrame {
         //반환 버튼을 눌렀을 때
         returnButton.addActionListener(e -> {
             while (currentMoney > 0) {
-                if (currentMoney >= 1000) {
+                while (currentMoney >= 1000 && MoneyList.moneyList.get(4).getStock() > 0) {
                     MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);
-                    ;
                     currentMoney -= 1000;
-                } else if (currentMoney >= 500) {
-                    if (MoneyList.moneyList.get(3).getStock() == 0) {
-                        MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
-                        currentMoney -= 100;
-                    } else {
-                        MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() - 1);
-                        currentMoney -= 500;
-                    }
-                } else if (currentMoney >= 100) {
-                    if (MoneyList.moneyList.get(2).getStock() == 0) {
-                        MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
-                        currentMoney -= 50;
-                    } else {
-                        MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
-                        currentMoney -= 100;
-                    }
-                } else if (currentMoney >= 50) {
-                    if (MoneyList.moneyList.get(1).getStock() == 0) {
-                        MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
-                        currentMoney -= 10;
-                    } else {
-                        MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
-                        currentMoney -= 50;
-                    }
-                } else {
+                }
+                while (currentMoney >= 500 && MoneyList.moneyList.get(3).getStock() > 0) {
+                    MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() - 1);
+                    currentMoney -= 500;
+                }
+                while (currentMoney >= 100 && MoneyList.moneyList.get(2).getStock() > 0) {
+                    MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
+                    currentMoney -= 100;
+                }
+                while (currentMoney >= 50 && MoneyList.moneyList.get(1).getStock() > 0) {
+                    MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
+                    currentMoney -= 50;
+                }
+                while (currentMoney >= 10 && MoneyList.moneyList.get(0).getStock() > 0) {
                     MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
                     currentMoney -= 10;
                 }
             }
             currentMoney = 0;
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+            Arrays.fill(insertMoneyCount,0);
             updateBuyButton();
         });
 
@@ -234,7 +254,7 @@ public class BuyFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //음료 정보 최신화
+                //파일에 음료 정보 최신화
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("Drinks.txt"))) {
                     for (int i = 0; i < DrinkList.drinks.size(); i++) {
                         writer.write(DrinkList.drinks.get(i).getName() + " ");
@@ -267,16 +287,13 @@ public class BuyFrame extends JFrame {
                 }
             }
         });
-
         setVisible(true);
     }
 
     //구매 불가능과 구매 가능 버튼 표시
-    private void updateBuyButton() {
-        for (int i = 0; i < 6; i++) {
+    public static void updateBuyButton() {
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             if (DrinkList.drinks.get(i).getPrice() <= currentMoney && DrinkList.drinks.get(i).getStock() > 0) {
-
-
                 canBuyButtons[i].setVisible(true);
                 canBuyButtons[i].setEnabled(true);
                 canNotBuyButtons[i].setVisible(false);

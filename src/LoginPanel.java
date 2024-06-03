@@ -34,11 +34,12 @@ public class LoginPanel extends JPanel {
         adminCheckButton.setBounds(250, 300, 400, 100);
         passwordField.setFont(textFont);
         adminCheckButton.setFont(textFont);
-        JLabel incorrectPasswordLabel = new JLabel("비밀번호가 알맞지 않습니다.");
-        incorrectPasswordLabel.setFont(textFont);
-        incorrectPasswordLabel.setBounds(220, 100, 500, 100);
-        incorrectPasswordLabel.setVisible(false);
-        add(incorrectPasswordLabel);
+        JLabel titleLabel = new JLabel("관리자 로그인");
+        titleLabel.setFont(textFont);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setBounds(0, 100, 900, 100);
+        titleLabel.setVisible(true);
+        add(titleLabel);
         adminCheckButton.addActionListener(e -> {
             String insertedPassword = String.valueOf(passwordField.getPassword());
             if (insertedPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
@@ -48,7 +49,7 @@ public class LoginPanel extends JPanel {
                 setVisible(false);
                 AdminFrame.adminMenuPanel.setVisible(true);
             } else {
-                incorrectPasswordLabel.setVisible(true);
+                JOptionPane.showMessageDialog(null,"비밀번호가 올바르지 않습니다.");
             }
         });
         // 엔터키를 눌렀을 때 버튼이 눌리도록 설정

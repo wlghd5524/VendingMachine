@@ -9,7 +9,7 @@ public class AddDrinkPanel extends JPanel {
         setBackground(new Color(252, 255, 216));
         setSize(900, 600);
         setLayout(null);
-        setVisible(false);
+        setVisible(true);
 
         //뒤로 가기 버튼
         JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -25,8 +25,8 @@ public class AddDrinkPanel extends JPanel {
 
 
         //음료 이미지
-        JLabel[] drinkImageLabel = new JLabel[6];
-        for (int i = 0; i < 6; i++) {
+        JLabel[] drinkImageLabel = new JLabel[DrinkList.drinks.size()];
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
                 drinkImageLabel[i].setBounds(50 + (i * 300), 40, 100, 200);
@@ -37,9 +37,9 @@ public class AddDrinkPanel extends JPanel {
         }
 
 
-        JLabel[] drinkStockLabel = new JLabel[6];  //음료 개수 표시
-        JButton[][] drinkStockButton = new JButton[6][3];  //음료 재고 보충 버튼
-        for (int i = 0; i < 6; i++) {
+        JLabel[] drinkStockLabel = new JLabel[DrinkList.drinks.size()];  //음료 개수 표시
+        JButton[][] drinkStockButton = new JButton[DrinkList.drinks.size()][3];  //음료 재고 보충 버튼
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             for (int j = 0; j < 3; j++) {
                 int finalI = i;
                 int finalJ = j;

@@ -14,7 +14,7 @@ public class ModifyDrinkPanel extends JPanel {
         setBackground(new Color(252, 255, 216));
         setSize(900, 600);
         setLayout(null);
-        setVisible(false);
+        setVisible(true);
 
         //뒤로 가기 버튼
         JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -30,8 +30,8 @@ public class ModifyDrinkPanel extends JPanel {
 
 
         //음료 이미지
-        JLabel[] drinkImageLabel = new JLabel[6];
-        for (int i = 0; i < 6; i++) {
+        JLabel[] drinkImageLabel = new JLabel[DrinkList.drinks.size()];
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
                 drinkImageLabel[i].setBounds(50 + (i * 300), 40, 100, 200);
@@ -42,7 +42,7 @@ public class ModifyDrinkPanel extends JPanel {
         }
 
 
-        JTextField[][] drinkTextField = new JTextField[6][2];
+        JTextField[][] drinkTextField = new JTextField[DrinkList.drinks.size()][2];
         for (int i = 0; i < drinkTextField.length; i++) {
             for (int j = 0; j < drinkTextField[i].length; j++) {
                 drinkTextField[i][j] = new JTextField();
@@ -58,8 +58,8 @@ public class ModifyDrinkPanel extends JPanel {
             drinkTextField[i][1].setText(String.valueOf(DrinkList.drinks.get(i).getPrice()));
         }
 
-        JButton[] imageChangeButton = new JButton[6];
-        for (int i = 0; i < 6; i++) {
+        JButton[] imageChangeButton = new JButton[DrinkList.drinks.size()];
+        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             imageChangeButton[i] = new JButton("사진 변경");
             imageChangeButton[i].setFont(textFont);
             if (i < 3) {

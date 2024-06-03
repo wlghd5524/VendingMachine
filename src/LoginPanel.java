@@ -49,7 +49,7 @@ public class LoginPanel extends JPanel {
                 setVisible(false);
                 AdminFrame.adminMenuPanel.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null,"비밀번호가 올바르지 않습니다.");
+                JOptionPane.showMessageDialog(null, "비밀번호가 올바르지 않습니다.");
             }
         });
         // 엔터키를 눌렀을 때 버튼이 눌리도록 설정

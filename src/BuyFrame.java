@@ -8,14 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public class BuyFrame extends JFrame {
-    private static int currentMoney = 0;                                   //현재 입력된 돈
-    private final JLabel currentMoneyLabel;                         //현재 입력된 돈을 알려주는 라벨
-    static int pressLogoCount = 0;                                  //로고를 누른 횟수
-    private static final JButton[] canBuyButtons = new JButton[6];         //각 음료의 구매 가능 버튼
-    private static final JButton[] canNotBuyButtons = new JButton[6];      //각 음료의 구매 불가능 버튼
-    private int[] insertMoneyCount = new int[5];                    //입력된 각 화폐 개수
-    static JLabel[] drinkImageLabel = new JLabel[6];                //음료 이미지 라벨
-    Font textFont = new Font("Arial", Font.BOLD, 40);    //텍스트 폰트
+    private static int currentMoney = 0;                                    //현재 입력된 돈
+    private final JLabel currentMoneyLabel;                                 //현재 입력된 돈을 알려주는 라벨
+    static int pressLogoCount = 0;                                          //로고를 누른 횟수
+    private static final JButton[] canBuyButtons = new JButton[6];          //각 음료의 구매 가능 버튼
+    private static final JButton[] canNotBuyButtons = new JButton[6];       //각 음료의 구매 불가능 버튼
+    private int[] insertMoneyCount = new int[5];                            //입력된 각 화폐 개수
+    static JLabel[] drinkImageLabel = new JLabel[6];                        //음료 이미지 라벨
+    Font textFont = new Font("Arial", Font.BOLD, 40);           //텍스트 폰트
 
     public BuyFrame() throws IOException {
         setTitle("Vending Machine");
@@ -246,7 +246,7 @@ public class BuyFrame extends JFrame {
             }
             currentMoney = 0;
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            Arrays.fill(insertMoneyCount,0);
+            Arrays.fill(insertMoneyCount, 0);
             updateBuyButton();
         });
 

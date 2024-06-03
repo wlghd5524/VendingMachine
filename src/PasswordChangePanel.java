@@ -18,16 +18,8 @@ public class PasswordChangePanel extends JPanel {
         setVisible(true);
 
         //뒤로 가기 버튼
-        JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        backButton.setBounds(0, 0, 50, 50);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-        backButton.setFocusPainted(false);
+        JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            AdminFrame.adminMenuPanel.setVisible(true);
-        });
 
 
         JPasswordField currentPasswordField = new JPasswordField("현재 비밀번호 입력");
@@ -147,22 +139,22 @@ public class PasswordChangePanel extends JPanel {
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
-                            JOptionPane.showMessageDialog(null,"비밀번호가 변경되었습니다.");
+                            JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다.");
                             setVisible(false);
                             AdminFrame.adminMenuPanel.setVisible(true);
                         } else {
-                            JOptionPane.showMessageDialog(null,"비밀번호는 알파벳, 숫자, 특수문자를 포함해야 합니다.");
+                            JOptionPane.showMessageDialog(null, "비밀번호는 알파벳, 숫자, 특수문자를 포함해야 합니다.");
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(null,"비밀번호는 8자리 이상이어야 합니다.");
+                        JOptionPane.showMessageDialog(null, "비밀번호는 8자리 이상이어야 합니다.");
                     }
 
                 } else {                              //새 비밀번호와 비밀번호 확인에 입력된 값이 다를 때
-                    JOptionPane.showMessageDialog(null,"새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                    JOptionPane.showMessageDialog(null, "새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
                 }
             } else {      //입력한 비밀번호가 틀릴 때
-                JOptionPane.showMessageDialog(null,"현재 비밀번호가 일치하지 않습니다.");
+                JOptionPane.showMessageDialog(null, "현재 비밀번호가 일치하지 않습니다.");
             }
         });
     }

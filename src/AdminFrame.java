@@ -42,7 +42,6 @@ public class AdminFrame extends JFrame {
         });
 
 
-
         //재고 보충 메뉴 버튼
         JButton addDrinkButton = new JButton("재고 보충");
         addDrinkButton.setFont(textFont);
@@ -53,7 +52,6 @@ public class AdminFrame extends JFrame {
             add(addDrinkPanel);
             adminMenuPanel.setVisible(false);
         });
-
 
 
         //자판기 일별/월별 매출 산출 버튼
@@ -68,7 +66,6 @@ public class AdminFrame extends JFrame {
         });
 
 
-
         //음료 일별/월별 매출 산출
         JButton drinkSalesReportButton = new JButton("<html><div style='text-align: center;'>음료<br>일별/월별<br>매출 산출</div></html>");
         drinkSalesReportButton.setFont(textFont);
@@ -79,7 +76,6 @@ public class AdminFrame extends JFrame {
             add(drinkSalesReportPanel);
             adminMenuPanel.setVisible(false);
         });
-
 
 
         //수금 버튼

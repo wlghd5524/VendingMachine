@@ -17,16 +17,8 @@ public class ModifyDrinkPanel extends JPanel {
         setVisible(true);
 
         //뒤로 가기 버튼
-        JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        backButton.setBounds(0, 0, 50, 50);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-        backButton.setFocusPainted(false);
+        JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            AdminFrame.adminMenuPanel.setVisible(true);
-        });
 
 
         //음료 이미지

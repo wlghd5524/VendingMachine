@@ -13,17 +13,10 @@ public class CollectMoneyPanel extends JPanel {
         setLayout(null);
         setVisible(true);
 
+
         //뒤로 가기 버튼
-        JButton backButton = new JButton(new ImageIcon(new ImageIcon("image/back.png").getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        backButton.setBounds(0, 0, 50, 50);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-        backButton.setFocusPainted(false);
+        JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            AdminFrame.adminMenuPanel.setVisible(true);
-        });
 
 
         // 각 화폐를 나타내는 라벨
@@ -40,12 +33,12 @@ public class CollectMoneyPanel extends JPanel {
             moneyLabels[i][0] = new JLabel(money[i]);
             moneyLabels[i][0].setHorizontalAlignment(SwingConstants.CENTER);
             moneyLabels[i][0].setFont(moneyFont);
-            moneyLabels[i][0].setBounds(moneyLabelsLocations[i][0], moneyLabelsLocations[i][1],200,100);
+            moneyLabels[i][0].setBounds(moneyLabelsLocations[i][0], moneyLabelsLocations[i][1], 200, 100);
             add(moneyLabels[i][0]);
 
             moneyLabels[i][1] = new JLabel(" X " + MoneyList.moneyList.get(i).getStock());
             moneyLabels[i][1].setFont(textFont);
-            moneyLabels[i][1].setBounds(stockLabelsLocations[i][0], stockLabelsLocations[i][1],200,100);
+            moneyLabels[i][1].setBounds(stockLabelsLocations[i][0], stockLabelsLocations[i][1], 200, 100);
             add(moneyLabels[i][1]);
         }
 
@@ -65,22 +58,22 @@ public class CollectMoneyPanel extends JPanel {
             addMoneyButtons[i][2] = new JButton("+50");
             int finalI = i;
             addMoneyButtons[i][0].addActionListener(e -> {
-                moneyI.setStock(moneyI.getStock()+5);
-                moneyLabels[finalI][1].setText(" X "+moneyI.getStock());
+                moneyI.setStock(moneyI.getStock() + 5);
+                moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
             });
             addMoneyButtons[i][1].addActionListener(e -> {
-                moneyI.setStock(moneyI.getStock()+10);
-                moneyLabels[finalI][1].setText(" X "+moneyI.getStock());
+                moneyI.setStock(moneyI.getStock() + 10);
+                moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
 
             });
             addMoneyButtons[i][2].addActionListener(e -> {
-                moneyI.setStock(moneyI.getStock()+50);
-                moneyLabels[finalI][1].setText(" X "+moneyI.getStock());
+                moneyI.setStock(moneyI.getStock() + 50);
+                moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
             });
 
-            for(int j = 0;j<3;j++) {
+            for (int j = 0; j < 3; j++) {
                 addMoneyButtons[i][j].setFont(textFont);
-                addMoneyButtons[i][j].setBounds(moneyButtonLocations[i][j][0],moneyButtonLocations[i][j][1], 150, 50);
+                addMoneyButtons[i][j].setBounds(moneyButtonLocations[i][j][0], moneyButtonLocations[i][j][1], 150, 50);
                 add(addMoneyButtons[i][j]);
             }
         }
@@ -109,10 +102,9 @@ public class CollectMoneyPanel extends JPanel {
                 }
             }
             if (collectableMoney.get() == 0) {
-                JOptionPane.showMessageDialog(null,"수금할만한 돈이 부족합니다.");
-            }
-            else {
-                JOptionPane.showMessageDialog(null,collectableMoney+"원이 수금되었습니다.");
+                JOptionPane.showMessageDialog(null, "수금할만한 돈이 부족합니다.");
+            } else {
+                JOptionPane.showMessageDialog(null, collectableMoney + "원이 수금되었습니다.");
             }
             collectableMoney.set(0);
             collectableMoneyLabel.setText("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");

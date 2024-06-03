@@ -1,3 +1,7 @@
+package adminPage;
+
+import adminPage.util.BackButtonGenerator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -10,6 +14,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import drink.*;
 
 public class DrinkSalesReportPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
@@ -35,14 +41,14 @@ public class DrinkSalesReportPanel extends JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
         //매출 파일을 불러와서 큐에 저장
-        for(int i = 2020;i<=now.getYear();i++) {
-            for(int j = 1;j<=12;j++) {
-                for(int k = 1;k<=31;k++) {
-                    String strI = String.format("%02d",i);
-                    String strJ = String.format("%02d",j);
-                    String strK = String.format("%02d",k);
-                    File file = new File("salesReport/"+strI+"년/"+strJ+"월/"+strK+"일.txt");
-                    if(file.exists()) {
+        for (int year = 2020; year <= now.getYear(); year++) {
+            for (int month = 1; month <= 12; month++) {
+                for (int day = 1; day <= 31; day++) {
+                    String strYear = String.format("%02d", year);
+                    String strMonth = String.format("%02d", month);
+                    String strDay = String.format("%02d", day);
+                    File file = new File("salesReport/" + strYear + "년/" + strMonth + "월/" + strDay + "일.txt");
+                    if (file.exists()) {
                         fileQueue.add(file);
                     }
                 }
@@ -50,7 +56,7 @@ public class DrinkSalesReportPanel extends JPanel {
         }
 
         //큐에서 순서대로 꺼내면서 매출 계산
-        while(!fileQueue.isEmpty()) {
+        while (!fileQueue.isEmpty()) {
             try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
                 String line;
                 while ((line = br.readLine()) != null && !line.isEmpty()) {
@@ -113,7 +119,7 @@ public class DrinkSalesReportPanel extends JPanel {
         monthResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        // 연, 월, 일, 음료수 목록 생성
+        // 콤보박스에 들어갈 연, 월, 일, 음료수 목록 생성
         List<String> years = generateYearComboBox(2020, 10);
         List<String> months = generateMonthComboBox();
         List<String> days = generateDayComboBox();

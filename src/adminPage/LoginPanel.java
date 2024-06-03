@@ -1,3 +1,7 @@
+package adminPage;
+
+import adminPage.util.HangulToQwerty;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +28,7 @@ public class LoginPanel extends JPanel {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,"비밀번호 파일을 불러올 수 없습니다. 관리자에게 문의해주세요.");
+            JOptionPane.showMessageDialog(null, "비밀번호 파일을 불러올 수 없습니다. 관리자에게 문의해주세요.");
         }
 
         //로그인 화면
@@ -64,8 +68,9 @@ public class LoginPanel extends JPanel {
         add(adminCheckButton);
         add(passwordField);
 
-        addFocusListenerToPasswordField(passwordField,"비밀번호 입력");
+        addFocusListenerToPasswordField(passwordField, "비밀번호 입력");
     }
+
     public static void addFocusListenerToPasswordField(JPasswordField passwordField, String hintText) {
         passwordField.setText(hintText);
         passwordField.setForeground(Color.GRAY);

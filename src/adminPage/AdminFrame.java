@@ -1,13 +1,17 @@
+package adminPage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import buyPage.BuyFrame;
+
 public class AdminFrame extends JFrame {
     static String password;
     Font textFont = new Font("Arial", Font.BOLD, 40);
-    static JPanel adminMenuPanel;
+    public static JPanel adminMenuPanel;
 
     public AdminFrame() {
         setTitle("Admin Page");

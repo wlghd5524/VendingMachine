@@ -1,3 +1,5 @@
+import buyPage.BuyFrame;
+
 import java.io.IOException;
 
 public class Main {

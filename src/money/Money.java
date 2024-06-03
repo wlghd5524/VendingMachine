@@ -1,13 +1,13 @@
-public class Drink {
-    private String name;
-    private int price;
-    private String imagePath;
-    private int stock;
+package money;
 
-    public Drink(String name, int price, int stock, String imagePath) {
+public class Money {
+    String name;
+    int price;
+    int stock;
+
+    public Money(String name, int price, int stock) {
         this.name = name;
         this.price = price;
-        this.imagePath = imagePath;
         this.stock = stock;
     }
 
@@ -25,14 +25,6 @@ public class Drink {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 
     public int getStock() {

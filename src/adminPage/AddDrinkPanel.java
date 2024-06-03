@@ -1,5 +1,11 @@
+package adminPage;
+
+import adminPage.util.BackButtonGenerator;
+
 import javax.swing.*;
 import java.awt.*;
+
+import drink.*;
 
 public class AddDrinkPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);

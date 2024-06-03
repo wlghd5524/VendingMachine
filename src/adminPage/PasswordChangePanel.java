@@ -1,8 +1,11 @@
+package adminPage;
+
+import adminPage.util.BackButtonGenerator;
+import adminPage.util.HangulToQwerty;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -50,9 +53,9 @@ public class PasswordChangePanel extends JPanel {
         add(titleLabel);
         titleLabel.setVisible(true);
 
-        LoginPanel.addFocusListenerToPasswordField(currentPasswordField,"현재 비밀번호 입력");
-        LoginPanel.addFocusListenerToPasswordField(newPasswordField,"새로운 비밀번호 입력");
-        LoginPanel.addFocusListenerToPasswordField(confirmPasswordField,"비밀번호 확인");
+        LoginPanel.addFocusListenerToPasswordField(currentPasswordField, "현재 비밀번호 입력");
+        LoginPanel.addFocusListenerToPasswordField(newPasswordField, "새로운 비밀번호 입력");
+        LoginPanel.addFocusListenerToPasswordField(confirmPasswordField, "비밀번호 확인");
 
 
         // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
@@ -106,7 +109,6 @@ public class PasswordChangePanel extends JPanel {
             }
         });
     }
-
 
 
 }

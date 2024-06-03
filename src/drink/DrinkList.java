@@ -1,3 +1,5 @@
+package drink;
+
 import java.util.LinkedList;
 
 public class DrinkList {

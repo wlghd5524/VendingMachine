@@ -1,17 +1,23 @@
+package buyPage;
+
+import adminPage.AdminFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
+import drink.*;
+import money.*;
+
 public class BuyFrame extends JFrame {
     private static int currentMoney = 0;                                    //현재 입력된 돈
     private final JLabel currentMoneyLabel;                                 //현재 입력된 돈을 알려주는 라벨
-    static int pressLogoCount = 0;                                          //로고를 누른 횟수
+    public static int pressLogoCount = 0;                                          //로고를 누른 횟수
     private static final JButton[] canBuyButtons = new JButton[6];          //각 음료의 구매 가능 버튼
     private static final JButton[] canNotBuyButtons = new JButton[6];       //각 음료의 구매 불가능 버튼
     private int[] insertMoneyCount = new int[5];                            //입력된 각 화폐 개수
@@ -40,7 +46,7 @@ public class BuyFrame extends JFrame {
         }
 
         //거스름돈 정보 불러오기
-        try (BufferedReader br = new BufferedReader(new FileReader("Money.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("money.Money.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] temp = line.split(" ");      //공백 문자를 기준으로 거스름돈 정보를 나눠서 temp에 저장. temp[0]:이름 temp[1]:가격 temp[2]:재고
@@ -139,19 +145,19 @@ public class BuyFrame extends JFrame {
                 try {
                     LocalDateTime today = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-                    String folderPath = "salesReport/"+today.format(formatter)+"년";
+                    String folderPath = "salesReport/" + today.format(formatter) + "년";
                     File folder = new File(folderPath);
                     if (!folder.exists()) {
                         folder.mkdirs(); // 연도별 폴더 생성
                     }
                     formatter = DateTimeFormatter.ofPattern("MM");
-                    folderPath += "/"+today.format(formatter)+"월";
+                    folderPath += "/" + today.format(formatter) + "월";
                     folder = new File(folderPath);
                     if (!folder.exists()) {
                         folder.mkdirs(); // 월별 폴더 생성
                     }
                     formatter = DateTimeFormatter.ofPattern("dd");
-                    String fileName = folderPath+"/"+today.format(formatter)+"일.txt";
+                    String fileName = folderPath + "/" + today.format(formatter) + "일.txt";
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                         formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
                         String formattedDate = formatter.format(today);
@@ -291,7 +297,7 @@ public class BuyFrame extends JFrame {
                 }
 
                 //거스름돈 정보 최신화
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter("Money.txt"))) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("money.Money.txt"))) {
                     for (int i = 0; i < MoneyList.moneyList.size(); i++) {
                         writer.write(MoneyList.moneyList.get(i).getName() + " ");
                         writer.write(MoneyList.moneyList.get(i).getPrice() + " ");

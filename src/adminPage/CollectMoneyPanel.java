@@ -1,6 +1,12 @@
+package adminPage;
+
+import adminPage.util.BackButtonGenerator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import money.*;
 
 public class CollectMoneyPanel extends JPanel {
     Font moneyFont = new Font("Arial", Font.BOLD, 60);

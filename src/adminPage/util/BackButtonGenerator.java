@@ -1,3 +1,7 @@
+package adminPage.util;
+
+import adminPage.AdminFrame;
+
 import javax.swing.*;
 import java.awt.*;
 

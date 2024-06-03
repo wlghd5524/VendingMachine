@@ -1,3 +1,7 @@
+package adminPage;
+
+import adminPage.util.BackButtonGenerator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -36,14 +40,14 @@ public class MachineSalesReportPanel extends JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
         //매출 파일을 불러와서 큐에 저장
-        for(int i = 2020;i<=now.getYear();i++) {
-            for(int j = 1;j<=12;j++) {
-                for(int k = 1;k<=31;k++) {
-                    String strI = String.format("%02d",i);
-                    String strJ = String.format("%02d",j);
-                    String strK = String.format("%02d",k);
-                    File file = new File("salesReport/"+strI+"년/"+strJ+"월/"+strK+"일.txt");
-                    if(file.exists()) {
+        for (int i = 2020; i <= now.getYear(); i++) {
+            for (int j = 1; j <= 12; j++) {
+                for (int k = 1; k <= 31; k++) {
+                    String strI = String.format("%02d", i);
+                    String strJ = String.format("%02d", j);
+                    String strK = String.format("%02d", k);
+                    File file = new File("salesReport/" + strI + "년/" + strJ + "월/" + strK + "일.txt");
+                    if (file.exists()) {
                         fileQueue.add(file);
                     }
                 }
@@ -51,7 +55,7 @@ public class MachineSalesReportPanel extends JPanel {
         }
 
         //큐에서 순서대로 꺼내면서 매출 계산
-        while(!fileQueue.isEmpty()) {
+        while (!fileQueue.isEmpty()) {
             try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
                 String line;
                 while ((line = br.readLine()) != null && !line.isEmpty()) {

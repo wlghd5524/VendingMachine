@@ -11,7 +11,7 @@ import money.*;
 public class CollectMoneyPanel extends JPanel {
     Font moneyFont = new Font("Arial", Font.BOLD, 60);
     Font textFont = new Font("Arial", Font.BOLD, 30);
-
+    
     public CollectMoneyPanel() {
         //수금 화면
         setBackground(new Color(252, 255, 216));

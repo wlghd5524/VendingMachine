@@ -31,9 +31,9 @@ public class MachineSalesReportPanel extends JPanel {
         add(backButton);
 
 
-        int totalSalesAmount = 0;                          //총 매출
-        int[][][] dailySalesAmount = new int[10][12][31];  //일간 매출 [년][월][일]
+        int[] yearSalesAmount = new int[10];               //연간 매출
         int[][] monthSalesAmount = new int[10][12];        //월간 매출 [년][월]
+        int[][][] dailySalesAmount = new int[10][12][31];  //일간 매출 [년][월][일]
 
 
         //매출 불러오기(매출 파일들을 불러와서 큐에 저장한 후 큐에서 꺼내면서 매출 계산)
@@ -70,7 +70,7 @@ public class MachineSalesReportPanel extends JPanel {
                     int recordedDay = dateTime.getDayOfMonth();
                     dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1] += drinkPrice;        //일별 매출 추가
                     monthSalesAmount[recordedYear - 2020][recordedMonth - 1] += drinkPrice;                         //월별 매출 추가
-                    totalSalesAmount += drinkPrice;                                                                 //총 매출 추가
+                    yearSalesAmount[recordedYear - 2020] += drinkPrice;                                             //연별 매출 추가
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -92,26 +92,26 @@ public class MachineSalesReportPanel extends JPanel {
         monthLabel.setBounds(400, 100, 100, 50);
         dayLabel.setBounds(600, 100, 100, 50);
 
-        //총 매출 라벨
-        JLabel totalResultLabel = new JLabel();
-        totalResultLabel.setFont(textFont);
-        totalResultLabel.setVisible(false);
-        totalResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        totalResultLabel.setBounds(0, 200, 900, 50);
+        //연별 매출 라벨
+        JLabel yearResultLabel = new JLabel();
+        yearResultLabel.setFont(textFont);
+        yearResultLabel.setVisible(false);
+        yearResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        yearResultLabel.setBounds(0, 200, 900, 50);
+
+        //월별 매출 라벨
+        JLabel monthResultLabel = new JLabel();
+        monthResultLabel.setFont(textFont);
+        monthResultLabel.setVisible(false);
+        monthResultLabel.setBounds(0, 300, 900, 50);
+        monthResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         //일별 매출 라벨
         JLabel dayResultLabel = new JLabel();
         dayResultLabel.setFont(textFont);
         dayResultLabel.setVisible(false);
         dayResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        dayResultLabel.setBounds(0, 300, 900, 50);
-
-        //월별 매출 라벨
-        JLabel monthResultLabel = new JLabel();
-        monthResultLabel.setFont(textFont);
-        monthResultLabel.setVisible(false);
-        monthResultLabel.setBounds(0, 400, 900, 50);
-        monthResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dayResultLabel.setBounds(0, 400, 900, 50);
 
 
         // 연, 월, 일 목록 생성
@@ -138,16 +138,15 @@ public class MachineSalesReportPanel extends JPanel {
         JButton selectButton = new JButton("선택");
         selectButton.setFont(textFont);
         selectButton.setBounds(700, 100, 100, 50);
-        int finalTotalSalesAmount = totalSalesAmount;
         //날짜 선택 버튼을 눌렀을 때 이벤트(선택된 년 월 일 콤보박스 아이템에 해당하는 매출 출력)
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
             int month = Integer.parseInt((String) monthComboBox.getSelectedItem());
             int day = Integer.parseInt((String) dayComboBox.getSelectedItem());
-            totalResultLabel.setText("총 매출 : " + finalTotalSalesAmount + "원");
+            yearResultLabel.setText(year + "년 매출 : " + yearSalesAmount[year - 2020] + "원");
             dayResultLabel.setText(year + "년 " + month + "월 " + day + "일 매출 : " + dailySalesAmount[year - 2020][month - 1][day - 1] + "원");
             monthResultLabel.setText(year + "년 " + month + "월 매출 : " + monthSalesAmount[year - 2020][month - 1] + "원");
-            totalResultLabel.setVisible(true);
+            yearResultLabel.setVisible(true);
             dayResultLabel.setVisible(true);
             monthResultLabel.setVisible(true);
         });
@@ -162,7 +161,7 @@ public class MachineSalesReportPanel extends JPanel {
         add(selectButton);
         add(dayResultLabel);
         add(monthResultLabel);
-        add(totalResultLabel);
+        add(yearResultLabel);
     }
 
     //ComboBox에 들어갈 년 월 일 숫자 생성기

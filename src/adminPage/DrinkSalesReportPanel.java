@@ -32,9 +32,9 @@ public class DrinkSalesReportPanel extends JPanel {
         JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
 
-        int[] totalSalesAmount = new int[DrinkList.drinks.size()];                    //음료의 총 매출
-        int[][][][] dailySalesAmount = new int[10][12][31][DrinkList.drinks.size()];  //일간 매출 [년][월][일][음료수]
+        int[][] yearSalesAmount = new int[10][DrinkList.drinks.size()];              //연간 매출 [년][음료수]
         int[][][] monthSalesAmount = new int[10][12][DrinkList.drinks.size()];        //월간 매출 [년][월][음료수]
+        int[][][][] dailySalesAmount = new int[10][12][31][DrinkList.drinks.size()];  //일간 매출 [년][월][일][음료수]
 
 
         //매출 불러오기(매출 파일들을 불러와서 큐에 저장한 후 큐에서 꺼내면서 매출 계산)
@@ -75,7 +75,7 @@ public class DrinkSalesReportPanel extends JPanel {
                         if (drink.getName().equals(drinkName)) {
                             dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;   //음료 일별 매출 추가
                             monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;                    //음료 월별 매출 추가
-                            totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;                                                            //음료 총 매출 추가
+                            yearSalesAmount[recordedYear - 2020][DrinkList.drinks.indexOf(drink)] += drinkPrice;                                                            //음료 총 매출 추가
                         }
                     }
                 }
@@ -100,26 +100,26 @@ public class DrinkSalesReportPanel extends JPanel {
         dayLabel.setBounds(580, 100, 100, 50);
 
 
-        //총 매출 라벨
-        JLabel totalResultLabel = new JLabel();
-        totalResultLabel.setFont(textFont);
-        totalResultLabel.setVisible(false);
-        totalResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        totalResultLabel.setBounds(0, 200, 900, 50);
+        //연별 매출 라벨
+        JLabel yearResultLabel = new JLabel();
+        yearResultLabel.setFont(textFont);
+        yearResultLabel.setVisible(false);
+        yearResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        yearResultLabel.setBounds(0, 200, 900, 50);
+
+        //월별 매출 라벨
+        JLabel monthResultLabel = new JLabel();
+        monthResultLabel.setFont(textFont);
+        monthResultLabel.setVisible(false);
+        monthResultLabel.setBounds(0, 300, 900, 50);
+        monthResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         //일별 매출 라벨
         JLabel dayResultLabel = new JLabel();
         dayResultLabel.setFont(textFont);
         dayResultLabel.setVisible(false);
         dayResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        dayResultLabel.setBounds(0, 300, 900, 50);
-
-        //월별 매출 라벨
-        JLabel monthResultLabel = new JLabel();
-        monthResultLabel.setFont(textFont);
-        monthResultLabel.setVisible(false);
-        monthResultLabel.setBounds(0, 400, 900, 50);
-        monthResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dayResultLabel.setBounds(0, 400, 900, 50);
 
 
         // 콤보박스에 들어갈 연, 월, 일, 음료수 목록 생성
@@ -165,10 +165,10 @@ public class DrinkSalesReportPanel extends JPanel {
                     drinkPrice = drink.getPrice();
                 }
             }
-            totalResultLabel.setText(drinkName + " 총 매출 : " + (totalSalesAmount[drinkIndex] / drinkPrice) + "개 " + totalSalesAmount[drinkIndex] + "원");
+            yearResultLabel.setText(drinkName + " " + year + "년 매출 : " + (yearSalesAmount[year - 2020][drinkIndex] / drinkPrice) + "개 " + yearSalesAmount[year - 2020][drinkIndex] + "원");
             dayResultLabel.setText(drinkName + " " + year + "년 " + month + "월 " + day + "일 매출 : " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] / drinkPrice + "개 " + dailySalesAmount[year - 2020][month - 1][day - 1][drinkIndex] + "원");
             monthResultLabel.setText(drinkName + " " + year + "년 " + month + "월 매출 : " + monthSalesAmount[year - 2020][month - 1][drinkIndex] / drinkPrice + "개 " + monthSalesAmount[year - 2020][month - 1][drinkIndex] + "원");
-            totalResultLabel.setVisible(true);
+            yearResultLabel.setVisible(true);
             dayResultLabel.setVisible(true);
             monthResultLabel.setVisible(true);
         });
@@ -181,7 +181,7 @@ public class DrinkSalesReportPanel extends JPanel {
         add(dayComboBox);
         add(dayLabel);
         add(selectButton);
-        add(totalResultLabel);
+        add(yearResultLabel);
         add(dayResultLabel);
         add(monthResultLabel);
     }

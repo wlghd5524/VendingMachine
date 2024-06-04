@@ -29,19 +29,19 @@ public class BuyPanel extends JPanel {
     public BuyPanel() {
 
         setLayout(null);
-        setSize(1100, 1100);
-        setBackground(new Color(252, 255, 216));
+        setSize(1100, 1000);
+        setBackground(new Color(252,255, 216));
 
 
         //입력된 금액 표시
         currentMoneyLabel = new JLabel("현재 금액 : " + currentMoney + "원");
         currentMoneyLabel.setFont(textFont);
-        currentMoneyLabel.setBounds(410, 700, 400, 150);
+        currentMoneyLabel.setBounds(410, 680, 400, 150);
         add(currentMoneyLabel);
 
         //로고 이미지 불러오기
-        JButton logoButton = new JButton(new ImageIcon(new ImageIcon("image/logo.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
-        logoButton.setBounds(50, 700, 150, 150);
+        JButton logoButton = new JButton(new ImageIcon(new ImageIcon("image/logo.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
+        logoButton.setBounds(50, 680, 125, 125);
         logoButton.setBorderPainted(false);
         logoButton.setContentAreaFilled(false);
         logoButton.setFocusPainted(false);
@@ -59,9 +59,9 @@ public class BuyPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
-                drinkImageLabel[i].setBounds(135 + (i * 370), 40, 100, 200);
+                drinkImageLabel[i].setBounds(135 + (i * 370), 20, 100, 200);
             } else {
-                drinkImageLabel[i].setBounds(135 + ((i % 3) * 370), 370, 100, 200);
+                drinkImageLabel[i].setBounds(135 + ((i % 3) * 370), 350, 100, 200);
             }
             add(drinkImageLabel[i]);
         }
@@ -78,9 +78,9 @@ public class BuyPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             priceLabels[i] = new JLabel(DrinkList.drinks.get(i).getPrice() + "원");
             if (i < 3) {
-                priceLabels[i].setBounds(140 + (i * 370), 240, 120, 50);    //첫번째 줄 음료 가격 표시 위치 및 크기
+                priceLabels[i].setBounds(140 + (i * 370), 220, 120, 50);    //첫번째 줄 음료 가격 표시 위치 및 크기
             } else {
-                priceLabels[i].setBounds(140 + ((i % 3) * 370), 570, 120, 50);  //두번째 줄 음료 가격 표시 위치 및 크기
+                priceLabels[i].setBounds(140 + ((i % 3) * 370), 550, 120, 50);  //두번째 줄 음료 가격 표시 위치 및 크기
             }
             priceLabels[i].setFont(textFont);
             add(priceLabels[i]);
@@ -91,9 +91,9 @@ public class BuyPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             canBuyButtons[i] = new JButton(canBuyButtonIcon);
             if (i < 3) {
-                canBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
+                canBuyButtons[i].setBounds(60 + (i * 370), 270, 250, 50);
             } else {
-                canBuyButtons[i].setBounds(60 + ((i % 3) * 370), 620, 250, 50);
+                canBuyButtons[i].setBounds(60 + ((i % 3) * 370), 600, 250, 50);
             }
             canBuyButtons[i].setBorderPainted(false);
             canBuyButtons[i].setContentAreaFilled(false);
@@ -118,9 +118,9 @@ public class BuyPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             canNotBuyButtons[i] = new JButton(canNotBuyButtonIcon);
             if (i < 3) {
-                canNotBuyButtons[i].setBounds(60 + (i * 370), 290, 250, 50);
+                canNotBuyButtons[i].setBounds(60 + (i * 370), 270, 250, 50);
             } else {
-                canNotBuyButtons[i].setBounds(60 + ((i % 3) * 370), 620, 250, 50);
+                canNotBuyButtons[i].setBounds(60 + ((i % 3) * 370), 600, 250, 50);
             }
             canNotBuyButtons[i].setBorderPainted(false);
             canNotBuyButtons[i].setContentAreaFilled(false);
@@ -149,7 +149,7 @@ public class BuyPanel extends JPanel {
         insertMoneyCount = new int[MoneyList.moneyList.size()];
         for (int i = 0; i < MoneyList.moneyList.size(); i++) {
             moneyButton[i] = new JButton(MoneyList.moneyList.get(i).getName());
-            moneyButton[i].setBounds(50 + (i * 210), 900, 150, 100);
+            moneyButton[i].setBounds(50 + (i * 210), 840, 150, 100);
             moneyButton[i].setFont(textFont);
             add(moneyButton[i]);
             int finalI = i;
@@ -185,8 +185,8 @@ public class BuyPanel extends JPanel {
 
 
         //반환 버튼 설정
-        JButton returnButton = new JButton(new ImageIcon(new ImageIcon("image/returnButton.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
-        returnButton.setBounds(900, 700, 150, 150);
+        JButton returnButton = new JButton(new ImageIcon(new ImageIcon("image/returnButton.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
+        returnButton.setBounds(900, 680, 125, 125);
         returnButton.setBorderPainted(false);
         returnButton.setContentAreaFilled(false);
         returnButton.setFocusPainted(false);

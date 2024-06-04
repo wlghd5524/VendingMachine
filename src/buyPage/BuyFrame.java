@@ -15,7 +15,7 @@ public class BuyFrame extends JFrame {
         setTitle("Vending Machine");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             //창을 닫으면 프로그램 종료 설정
         setResizable(false);                                        //창 크기 변경 불가
-        setSize(1100, 1100);                           //창 크기 설정
+        setSize(1100, 1000);                           //창 크기 설정
         getContentPane().setBackground(new Color(252, 255, 216));   //백그라운드 색 변경
         setLayout(null);
         //음료 정보 불러오기

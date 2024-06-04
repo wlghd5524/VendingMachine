@@ -74,7 +74,7 @@ public class BuyPanel extends JPanel {
         ImageIcon canNotBuyButtonIcon = new ImageIcon(new ImageIcon("image/can not buy button.png").getImage().getScaledInstance(250, 50, Image.SCALE_SMOOTH));
 
         //가격 표시 라벨 설정
-        JLabel[] priceLabels = new JLabel[DrinkList.drinks.size()];
+        priceLabels = new JLabel[DrinkList.drinks.size()];
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             priceLabels[i] = new JLabel(DrinkList.drinks.get(i).getPrice() + "원");
             if (i < 3) {
@@ -109,37 +109,7 @@ public class BuyPanel extends JPanel {
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
                 DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);  //재고 줄이기
                 updateBuyButton();
-                //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
-                try {
-                    LocalDateTime today = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-                    String folderPath = "salesReport/" + today.format(formatter) + "년";
-                    File folder = new File(folderPath);
-                    if (!folder.exists()) {
-                        folder.mkdirs(); // 연도별 폴더 생성
-                    }
-                    formatter = DateTimeFormatter.ofPattern("MM");
-                    folderPath += "/" + today.format(formatter) + "월";
-                    folder = new File(folderPath);
-                    if (!folder.exists()) {
-                        folder.mkdirs(); // 월별 폴더 생성
-                    }
-                    formatter = DateTimeFormatter.ofPattern("dd");
-                    String fileName = folderPath + "/" + today.format(formatter) + "일.txt";
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-                        formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
-                        String formattedDate = formatter.format(today);
-                        writer.write(formattedDate + " " + DrinkList.drinks.get(finalI).getName() + " " + DrinkList.drinks.get(finalI).getPrice());  //파일을 생성하고 판매 로그 추가
-                        if (DrinkList.drinks.get(finalI).getStock() == 0) {
-                            writer.write(" Sold Out");      //품절 로그 추가
-                        }
-                        writer.newLine();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                addSalesLog(finalI);  //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
             });
         }
 
@@ -301,6 +271,40 @@ public class BuyPanel extends JPanel {
             return true;    //거스름돈을 거슬러줄 수 있으면 구매 가능
         } else {
             return false;
+        }
+    }
+
+    //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
+    public static void addSalesLog(int index) {
+        try {
+            LocalDateTime today = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+            String folderPath = "salesReport/" + today.format(formatter) + "년";
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs(); // 연도별 폴더 생성
+            }
+            formatter = DateTimeFormatter.ofPattern("MM");
+            folderPath += "/" + today.format(formatter) + "월";
+            folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs(); // 월별 폴더 생성
+            }
+            formatter = DateTimeFormatter.ofPattern("dd");
+            String fileName = folderPath + "/" + today.format(formatter) + "일.txt";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+                formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
+                String formattedDate = formatter.format(today);
+                writer.write(formattedDate + " " + DrinkList.drinks.get(index).getName() + " " + DrinkList.drinks.get(index).getPrice());  //파일을 생성하고 판매 로그 추가
+                if (DrinkList.drinks.get(index).getStock() == 0) {
+                    writer.write(" Sold Out");      //품절 로그 추가
+                }
+                writer.newLine();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

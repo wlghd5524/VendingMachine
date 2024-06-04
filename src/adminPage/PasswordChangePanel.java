@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+//비밀번호 변경 화면 패널 생성 클래스
 public class PasswordChangePanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
 
@@ -24,28 +25,7 @@ public class PasswordChangePanel extends JPanel {
         JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
 
-
-        //비밀번호 입력 칸
-        JPasswordField currentPasswordField = new JPasswordField("현재 비밀번호 입력");
-        currentPasswordField.setFont(textFont);
-        currentPasswordField.setForeground(Color.GRAY);
-        JPasswordField newPasswordField = new JPasswordField("새로운 비밀번호 입력");
-        newPasswordField.setFont(textFont);
-        newPasswordField.setForeground(Color.GRAY);
-        JPasswordField confirmPasswordField = new JPasswordField("비밀번호 확인");
-        confirmPasswordField.setFont(textFont);
-        confirmPasswordField.setForeground(Color.GRAY);
-        JButton passwordChangeButton = new JButton("비밀번호 변경");
-        passwordChangeButton.setFont(textFont);
-        passwordChangeButton.setBounds(250, 400, 400, 100);
-        currentPasswordField.setBounds(250, 100, 400, 100);
-        newPasswordField.setBounds(250, 200, 400, 100);
-        confirmPasswordField.setBounds(250, 300, 400, 100);
-        add(currentPasswordField);
-        add(newPasswordField);
-        add(confirmPasswordField);
-        add(passwordChangeButton);
-
+        //제목 라벨
         JLabel titleLabel = new JLabel("비밀번호 변경");
         titleLabel.setFont(textFont);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -53,12 +33,44 @@ public class PasswordChangePanel extends JPanel {
         add(titleLabel);
         titleLabel.setVisible(true);
 
+
+        //비밀번호 입력 칸 설정
+        JPasswordField currentPasswordField = new JPasswordField("현재 비밀번호 입력");
+        currentPasswordField.setFont(textFont);
+        currentPasswordField.setForeground(Color.GRAY);
+        currentPasswordField.setBounds(250, 100, 400, 100);
+
+        //새 비밀번호 입력 칸 설정
+        JPasswordField newPasswordField = new JPasswordField("새로운 비밀번호 입력");
+        newPasswordField.setFont(textFont);
+        newPasswordField.setForeground(Color.GRAY);
+        newPasswordField.setBounds(250, 200, 400, 100);
+
+        //새 비밀번호 확인 입력 칸 설정
+        JPasswordField confirmPasswordField = new JPasswordField("비밀번호 확인");
+        confirmPasswordField.setFont(textFont);
+        confirmPasswordField.setForeground(Color.GRAY);
+        confirmPasswordField.setBounds(250, 300, 400, 100);
+
+        //비밀번호 변경 버튼 설정
+        JButton passwordChangeButton = new JButton("비밀번호 변경");
+        passwordChangeButton.setFont(textFont);
+        passwordChangeButton.setBounds(250, 400, 400, 100);
+
+
+        add(currentPasswordField);
+        add(newPasswordField);
+        add(confirmPasswordField);
+        add(passwordChangeButton);
+
+
+        //입력 칸에 아무것도 입력되지 않았을 때 힌트 문자 설정
         LoginPanel.addFocusListenerToPasswordField(currentPasswordField, "현재 비밀번호 입력");
         LoginPanel.addFocusListenerToPasswordField(newPasswordField, "새로운 비밀번호 입력");
         LoginPanel.addFocusListenerToPasswordField(confirmPasswordField, "비밀번호 확인");
 
 
-        // 엔터키를 눌렀을 때 버튼이 눌리도록 설정
+        // 엔터키를 눌렀을 때 비밀번호 변경 버튼이 눌리도록 설정
         confirmPasswordField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "submit");
         confirmPasswordField.getActionMap().put("submit", new AbstractAction() {
             @Override
@@ -66,10 +78,13 @@ public class PasswordChangePanel extends JPanel {
                 passwordChangeButton.doClick();
             }
         });
+
+        // 비밀번호 변경 버튼을 눌렀을 때 이벤트 설정
         passwordChangeButton.addActionListener(e -> {
             String currentPassword = new String(currentPasswordField.getPassword());    //현재 비밀번호
             String newPassword = new String(newPasswordField.getPassword());        //새 비밀번호
             String confirmPassword = new String(confirmPasswordField.getPassword());    //새 비밀번호 확인
+            //입력된 문자가 한글이면 자동으로 쿼티 자판 영어로 변환
             if (currentPassword.matches(".*[ㄱ-ㅎㅏ-ㅣ].*")) {
                 currentPassword = HangulToQwerty.convertHangulToQwerty(currentPassword);
             }
@@ -101,11 +116,11 @@ public class PasswordChangePanel extends JPanel {
                         JOptionPane.showMessageDialog(null, "비밀번호는 8자리 이상이어야 합니다.");
                     }
 
-                } else {                              //새 비밀번호와 비밀번호 확인에 입력된 값이 다를 때
-                    JOptionPane.showMessageDialog(null, "새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");     //새 비밀번호와 비밀번호 확인에 입력된 값이 다를 때
                 }
-            } else {      //입력한 비밀번호가 틀릴 때
-                JOptionPane.showMessageDialog(null, "현재 비밀번호가 일치하지 않습니다.");
+            } else {
+                JOptionPane.showMessageDialog(null, "현재 비밀번호가 일치하지 않습니다.");     //입력한 비밀번호가 틀릴 때
             }
         });
     }

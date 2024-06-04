@@ -49,7 +49,7 @@ public class BuyFrame extends JFrame {
         add(buyPanel);
 
 
-        // 프로그램이 종료될 때
+        // 프로그램이 종료될 때 이벤트 설정
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+//자판기 매출 화면 패널 생성 클래스
 public class MachineSalesReportPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
     Font comboBoxFont = new Font("Arial", Font.PLAIN, 20);
@@ -35,7 +36,7 @@ public class MachineSalesReportPanel extends JPanel {
         int[][] monthSalesAmount = new int[10][12];        //월간 매출 [년][월]
 
 
-        //매출 불러오기
+        //매출 불러오기(매출 파일들을 불러와서 큐에 저장한 후 큐에서 꺼내면서 매출 계산)
         Queue<File> fileQueue = new LinkedList<>();  //매출 파일을 저장할 큐
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
@@ -48,7 +49,7 @@ public class MachineSalesReportPanel extends JPanel {
                     String strK = String.format("%02d", k);
                     File file = new File("salesReport/" + strI + "년/" + strJ + "월/" + strK + "일.txt");
                     if (file.exists()) {
-                        fileQueue.add(file);
+                        fileQueue.add(file);    //매출 파일이 존재하면 큐에 추가
                     }
                 }
             }
@@ -58,6 +59,7 @@ public class MachineSalesReportPanel extends JPanel {
         while (!fileQueue.isEmpty()) {
             try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
                 String line;
+                //한 줄 씩 불러와서 공백문자를 기준으로 나눠서 temp[]에 저장
                 while ((line = br.readLine()) != null && !line.isEmpty()) {
                     String[] temp = line.split(" ");
                     String date = temp[0];
@@ -66,13 +68,13 @@ public class MachineSalesReportPanel extends JPanel {
                     int recordedYear = dateTime.getYear();
                     int recordedMonth = dateTime.getMonthValue();
                     int recordedDay = dateTime.getDayOfMonth();
-                    dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1] += drinkPrice;
-                    monthSalesAmount[recordedYear - 2020][recordedMonth - 1] += drinkPrice;
-                    totalSalesAmount += drinkPrice;
+                    dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1] += drinkPrice;        //일별 매출 추가
+                    monthSalesAmount[recordedYear - 2020][recordedMonth - 1] += drinkPrice;                         //월별 매출 추가
+                    totalSalesAmount += drinkPrice;                                                                 //총 매출 추가
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "매출 파일을 읽을 수 없습니다. 관리자 메뉴로 돌아갑니다.");
+                JOptionPane.showMessageDialog(null, "매출 파일을 읽을 수 없습니다. 관리자 메뉴로 돌아갑니다.");    //매출 파일을 불러오는 중 문제가 생기면 메세지로 알리고 관리자 메뉴로 돌아감
                 setVisible(false);
                 AdminFrame.adminMenuPanel.setVisible(true);
             }
@@ -137,6 +139,7 @@ public class MachineSalesReportPanel extends JPanel {
         selectButton.setFont(textFont);
         selectButton.setBounds(700, 100, 100, 50);
         int finalTotalSalesAmount = totalSalesAmount;
+        //날짜 선택 버튼을 눌렀을 때 이벤트(선택된 년 월 일 콤보박스 아이템에 해당하는 매출 출력)
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
             int month = Integer.parseInt((String) monthComboBox.getSelectedItem());

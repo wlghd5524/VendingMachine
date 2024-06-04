@@ -17,6 +17,7 @@ import java.util.Queue;
 
 import drink.*;
 
+//음료별 매출 화면 패널 생성 클래스
 public class DrinkSalesReportPanel extends JPanel {
     Font textFont = new Font("Arial", Font.BOLD, 40);
     Font comboBoxFont = new Font("Arial", Font.PLAIN, 20);
@@ -31,12 +32,12 @@ public class DrinkSalesReportPanel extends JPanel {
         JButton backButton = BackButtonGenerator.createBackButton(this);
         add(backButton);
 
-        int[] totalSalesAmount = new int[DrinkList.drinks.size()];
+        int[] totalSalesAmount = new int[DrinkList.drinks.size()];                    //음료의 총 매출
         int[][][][] dailySalesAmount = new int[10][12][31][DrinkList.drinks.size()];  //일간 매출 [년][월][일][음료수]
         int[][][] monthSalesAmount = new int[10][12][DrinkList.drinks.size()];        //월간 매출 [년][월][음료수]
 
 
-        //매출 불러오기
+        //매출 불러오기(매출 파일들을 불러와서 큐에 저장한 후 큐에서 꺼내면서 매출 계산)
         Queue<File> fileQueue = new LinkedList<>();  //매출 파일을 저장할 큐
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
@@ -49,7 +50,7 @@ public class DrinkSalesReportPanel extends JPanel {
                     String strDay = String.format("%02d", day);
                     File file = new File("salesReport/" + strYear + "년/" + strMonth + "월/" + strDay + "일.txt");
                     if (file.exists()) {
-                        fileQueue.add(file);
+                        fileQueue.add(file);    //매출 파일이 존재하면 큐에 추가
                     }
                 }
             }
@@ -59,6 +60,7 @@ public class DrinkSalesReportPanel extends JPanel {
         while (!fileQueue.isEmpty()) {
             try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
                 String line;
+                //한 줄 씩 불러와서 공백문자를 기준으로 나눠서 temp[]에 저장
                 while ((line = br.readLine()) != null && !line.isEmpty()) {
                     String[] temp = line.split(" ");
                     String date = temp[0];
@@ -68,17 +70,18 @@ public class DrinkSalesReportPanel extends JPanel {
                     int recordedYear = dateTime.getYear();
                     int recordedMonth = dateTime.getMonthValue();
                     int recordedDay = dateTime.getDayOfMonth();
+                    //브루트포싱을 통해 매출 파일에 있는 음료 이름을 음료 리스트에 있는 음료 이름과 비교하여 찾기
                     for (Drink drink : DrinkList.drinks) {
                         if (drink.getName().equals(drinkName)) {
-                            dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
-                            monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;
-                            totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;
+                            dailySalesAmount[recordedYear - 2020][recordedMonth - 1][recordedDay - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;   //음료 일별 매출 추가
+                            monthSalesAmount[recordedYear - 2020][recordedMonth - 1][DrinkList.drinks.indexOf(drink)] += drinkPrice;                    //음료 월별 매출 추가
+                            totalSalesAmount[DrinkList.drinks.indexOf(drink)] += drinkPrice;                                                            //음료 총 매출 추가
                         }
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "매출 파일을 읽을 수 없습니다. 관리자 메뉴로 돌아갑니다.");
+                JOptionPane.showMessageDialog(null, "매출 파일을 읽을 수 없습니다. 관리자 메뉴로 돌아갑니다.");        //매출 파일을 불러오는 중 문제가 생기면 메세지로 알리고 관리자 메뉴로 돌아감
                 setVisible(false);
                 AdminFrame.adminMenuPanel.setVisible(true);
             }
@@ -148,6 +151,7 @@ public class DrinkSalesReportPanel extends JPanel {
         JButton selectButton = new JButton("선택");
         selectButton.setFont(textFont);
         selectButton.setBounds(780, 100, 100, 50);
+        //날짜 선택 버튼을 눌렀을 때 이벤트(선택된 년 월 일 콤보박스 아이템에 해당하는 매출 출력)
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
             int month = Integer.parseInt((String) monthComboBox.getSelectedItem());
@@ -207,6 +211,7 @@ public class DrinkSalesReportPanel extends JPanel {
         return dayComboBox;
     }
 
+    //콤보박스에 들어갈 음료 이름 생성기
     public List<String> generateDrinkComboBox() {
         List<String> drinkComboBox = new ArrayList<>();
         for (int i = 0; i < DrinkList.drinks.size(); i++) {

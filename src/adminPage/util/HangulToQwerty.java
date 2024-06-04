@@ -6,7 +6,6 @@ import java.util.Map;
 //한글을 영어 쿼티 자판으로 변환하는 클래스
 public class HangulToQwerty {
     static final Map<Character, Character> hangulToQwertyMap = new HashMap<>();
-
     static {
         // 자음
         hangulToQwertyMap.put('ㄱ', 'r');
@@ -49,7 +48,7 @@ public class HangulToQwerty {
         StringBuilder qwerty = new StringBuilder();
         for (char ch : hangul.toCharArray()) {
             if (hangulToQwertyMap.containsKey(ch)) {
-                qwerty.append(hangulToQwertyMap.get(ch));
+                qwerty.append(hangulToQwertyMap.get(ch));   //한글이 들어오면 영어 쿼티로 전환하여 추가
             } else {
                 qwerty.append(ch); // 만약 한글이 아닌 문자가 들어오면 그대로 추가
             }

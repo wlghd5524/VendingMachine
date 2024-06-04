@@ -11,7 +11,7 @@ import buyPage.BuyPanel;
 public class AdminFrame extends JFrame {
     static String password;
     public static JPanel adminMenuPanel;
-    JPanel passwordChangePanel;
+
     public AdminFrame() {
         setTitle("Admin Page");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,20 +29,21 @@ public class AdminFrame extends JFrame {
         add(adminMenuPanel);
 
 
-        // 관리자 스레드 중복 실행 방지
+        // 관리자 페이지를 닫았을 때 이벤트
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 isAdminThreadRunning.set(false);
                 BuyPanel.pressLogoCount = 0;
-                BuyPanel.updateBuyButton();
+                BuyPanel.updateDrinkInformation();      //음료 정보(사진,가격) 최신화
+                BuyPanel.updateBuyButton();             //구매 가능한 음료 표시 최신화
             }
         });
         setVisible(true);
     }
 
     // 관리자 스레드 중복 실행 방지
-    private static final AtomicBoolean isAdminThreadRunning = new AtomicBoolean(false);
+    private static final AtomicBoolean isAdminThreadRunning = new AtomicBoolean(false); //lock 형식으로 현재 스레드가 실행중인지 표시
     static Runnable adminMode = () -> {
         try {
             AdminFrame adminFrame = new AdminFrame();

@@ -1,7 +1,5 @@
 package buyPage;
 
-import adminPage.AdminFrame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -67,7 +65,6 @@ public class BuyFrame extends JFrame {
                             writer.write(DrinkList.drinks.get(i).getImagePath() + "\n");
                         }
                     }
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

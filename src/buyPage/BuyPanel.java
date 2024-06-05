@@ -99,19 +99,18 @@ public class BuyPanel extends JPanel {
             canBuyButtons[i].setContentAreaFilled(false);
             canBuyButtons[i].setFocusPainted(false);
             add(canBuyButtons[i]);
-        }
-
-        //구매 버튼을 눌렀을 때 이벤트
-        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             int finalI = i;
+            //구매 버튼을 눌렀을 때 이벤트
             canBuyButtons[i].addActionListener(e -> {
                 currentMoney -= DrinkList.drinks.get(finalI).getPrice();
                 currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
                 DrinkList.drinks.get(finalI).setStock(DrinkList.drinks.get(finalI).getStock() - 1);  //재고 줄이기
                 updateBuyButton();
                 addSalesLog(finalI);  //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
+                JOptionPane.showMessageDialog(null,DrinkList.drinks.get(finalI).getName()+" 이(가) 배출되었습니다.");
             });
         }
+
 
         //구매 불가 표시
         canNotBuyButtons = new JButton[DrinkList.drinks.size()];
@@ -126,10 +125,6 @@ public class BuyPanel extends JPanel {
             canNotBuyButtons[i].setContentAreaFilled(false);
             canNotBuyButtons[i].setFocusPainted(false);
             add(canNotBuyButtons[i]);
-        }
-        updateBuyButton();
-
-        for (int i = 0; i < DrinkList.drinks.size(); i++) {
             int finalI = i;
             //구매 불가 버튼을 눌렀을 때 이유 메시지 알림
             canNotBuyButtons[i].addActionListener(e -> {
@@ -156,6 +151,7 @@ public class BuyPanel extends JPanel {
             if (finalI < 4) {
                 //화폐 입력 버튼을 눌렀을 때 이벤트 설정
                 moneyButton[i].addActionListener(e -> {
+                    //총 7000원 이하로 입력 받기
                     if (currentMoney + MoneyList.moneyList.get(finalI).getPrice() <= 7000) {
                         insertMoneyCount[finalI]++;
                         currentMoney += MoneyList.moneyList.get(finalI).getPrice();
@@ -169,6 +165,7 @@ public class BuyPanel extends JPanel {
             } else {
                 //1000원 입력 버튼을 눌렀을 때 이벤트 설정
                 moneyButton[4].addActionListener(e -> {
+                    //지폐는 5000원까지만 입력받기
                     if (currentMoney + MoneyList.moneyList.get(4).getPrice() <= 5000) {
                         insertMoneyCount[4]++;
                         currentMoney += MoneyList.moneyList.get(4).getPrice();
@@ -193,6 +190,7 @@ public class BuyPanel extends JPanel {
         add(returnButton);
         //반환 버튼을 눌렀을 때 이벤트 설정
         returnButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null,currentMoney+"원이 반환되었습니다.");
             while (currentMoney > 0) {
                 while (currentMoney >= 1000 && MoneyList.moneyList.get(4).getStock() > 0) {
                     MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);
@@ -219,7 +217,9 @@ public class BuyPanel extends JPanel {
             currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
             Arrays.fill(insertMoneyCount, 0);
             updateBuyButton();
+
         });
+        updateBuyButton();
     }
 
     //음료수 정보 최신화

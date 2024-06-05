@@ -190,34 +190,38 @@ public class BuyPanel extends JPanel {
         add(returnButton);
         //반환 버튼을 눌렀을 때 이벤트 설정
         returnButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null,currentMoney+"원이 반환되었습니다.");
-            while (currentMoney > 0) {
-                while (currentMoney >= 1000 && MoneyList.moneyList.get(4).getStock() > 0) {
-                    MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);
-                    currentMoney -= 1000;
+            if(currentMoney > 0) {
+                JOptionPane.showMessageDialog(null,currentMoney+"원이 반환되었습니다.");
+                while (currentMoney > 0) {
+                    while (currentMoney >= 1000 && MoneyList.moneyList.get(4).getStock() > 0) {
+                        MoneyList.moneyList.get(4).setStock(MoneyList.moneyList.get(4).getStock() - 1);
+                        currentMoney -= 1000;
+                    }
+                    while (currentMoney >= 500 && MoneyList.moneyList.get(3).getStock() > 0) {
+                        MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() - 1);
+                        currentMoney -= 500;
+                    }
+                    while (currentMoney >= 100 && MoneyList.moneyList.get(2).getStock() > 0) {
+                        MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
+                        currentMoney -= 100;
+                    }
+                    while (currentMoney >= 50 && MoneyList.moneyList.get(1).getStock() > 0) {
+                        MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
+                        currentMoney -= 50;
+                    }
+                    while (currentMoney >= 10 && MoneyList.moneyList.get(0).getStock() > 0) {
+                        MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
+                        currentMoney -= 10;
+                    }
                 }
-                while (currentMoney >= 500 && MoneyList.moneyList.get(3).getStock() > 0) {
-                    MoneyList.moneyList.get(3).setStock(MoneyList.moneyList.get(3).getStock() - 1);
-                    currentMoney -= 500;
-                }
-                while (currentMoney >= 100 && MoneyList.moneyList.get(2).getStock() > 0) {
-                    MoneyList.moneyList.get(2).setStock(MoneyList.moneyList.get(2).getStock() - 1);
-                    currentMoney -= 100;
-                }
-                while (currentMoney >= 50 && MoneyList.moneyList.get(1).getStock() > 0) {
-                    MoneyList.moneyList.get(1).setStock(MoneyList.moneyList.get(1).getStock() - 1);
-                    currentMoney -= 50;
-                }
-                while (currentMoney >= 10 && MoneyList.moneyList.get(0).getStock() > 0) {
-                    MoneyList.moneyList.get(0).setStock(MoneyList.moneyList.get(0).getStock() - 1);
-                    currentMoney -= 10;
-                }
+                currentMoney = 0;
+                currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
+                Arrays.fill(insertMoneyCount, 0);
+                updateBuyButton();
             }
-            currentMoney = 0;
-            currentMoneyLabel.setText("현재 금액 : " + currentMoney + "원");
-            Arrays.fill(insertMoneyCount, 0);
-            updateBuyButton();
-
+            else {
+                JOptionPane.showMessageDialog(null,"반환할 돈이 없습니다.");
+            }
         });
         updateBuyButton();
     }

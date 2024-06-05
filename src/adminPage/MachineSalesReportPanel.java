@@ -10,10 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
 
 //자판기 매출 화면 패널 생성 클래스
 public class MachineSalesReportPanel extends JPanel {
@@ -36,11 +34,11 @@ public class MachineSalesReportPanel extends JPanel {
         int[][][] dailySalesAmount = new int[10][12][31];  //일간 매출 [년][월][일]
 
 
-        //매출 불러오기(매출 파일들을 불러와서 큐에 저장한 후 큐에서 꺼내면서 매출 계산)
-        Queue<File> fileQueue = new LinkedList<>();  //매출 파일을 저장할 큐
+        //매출 불러오기(매출 파일들을 불러와서 스택에 저장한 후 스택에서 꺼내면서 매출 계산)
+        Stack<File> fileStack = new Stack<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
-        //매출 파일을 불러와서 큐에 저장
+        //매출 파일을 불러와서 스택에 push
         for (int i = 2020; i <= now.getYear(); i++) {
             for (int j = 1; j <= 12; j++) {
                 for (int k = 1; k <= 31; k++) {
@@ -49,15 +47,15 @@ public class MachineSalesReportPanel extends JPanel {
                     String strK = String.format("%02d", k);
                     File file = new File("salesReport/" + strI + "년/" + strJ + "월/" + strK + "일.txt");
                     if (file.exists()) {
-                        fileQueue.add(file);    //매출 파일이 존재하면 큐에 추가
+                        fileStack.push(file);
                     }
                 }
             }
         }
 
-        //큐에서 순서대로 꺼내면서 매출 계산
-        while (!fileQueue.isEmpty()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(fileQueue.poll()))) {
+        //스택에서 파일 하나씩 꺼내면서 매출 계산
+        while (!fileStack.isEmpty()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(fileStack.pop()))) {
                 String line;
                 //한 줄 씩 불러와서 공백문자를 기준으로 나눠서 temp[]에 저장
                 while ((line = br.readLine()) != null && !line.isEmpty()) {

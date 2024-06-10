@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 
+import adminPage.util.ReportGenerator;
 import drink.*;
 import money.*;
 

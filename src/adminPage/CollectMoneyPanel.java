@@ -10,9 +10,10 @@ import money.*;
 
 //수금 화면 패널 생성 클래스
 public class CollectMoneyPanel extends JPanel {
-    Font moneyFont = new Font("Arial", Font.BOLD, 60);
-    Font textFont = new Font("Arial", Font.BOLD, 30);
+    Font moneyFont = new Font("SansSerif", Font.BOLD, 60);
+    Font textFont = new Font("SansSerif", Font.BOLD, 30);
 
+    AtomicInteger collectableMoney;   //수금 가능한 금액
     public CollectMoneyPanel() {
         //수금 화면 패널 설정
         setBackground(new Color(252, 255, 216));
@@ -26,13 +27,21 @@ public class CollectMoneyPanel extends JPanel {
         add(backButton);
 
 
+        collectableMoney = new AtomicInteger();   //수금 가능한 금액
+        updateCollectableMoney();
+        JLabel collectableMoneyLabel = new JLabel("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");
+        collectableMoneyLabel.setFont(textFont);
+        collectableMoneyLabel.setBounds(625, 350, 500, 100);
+        add(collectableMoneyLabel);
+
+
         // 각 화폐를 나타내는 라벨
         JLabel[][] moneyLabels = new JLabel[MoneyList.moneyList.size()][2];
         int[][] moneyLabelsLocations = {
-                {50, 50}, {325, 50}, {625, 50}, {50, 300}, {325, 300}
+                {50, 50}, {325, 50}, {600, 50}, {50, 300}, {325, 300}
         };
         int[][] stockLabelsLocations = {
-                {215, 50}, {490, 50}, {800, 50}, {225, 300}, {515, 300}
+                {215, 50}, {490, 50}, {785, 50}, {225, 300}, {515, 300}
         };
         //거스름돈 표시 라벨 설정
         for (int i = 0; i < MoneyList.moneyList.size(); i++) {
@@ -52,7 +61,7 @@ public class CollectMoneyPanel extends JPanel {
         int[][][] moneyButtonLocations = {
                 {{100, 150}, {100, 200}, {100, 250}},
                 {{375, 150}, {375, 200}, {375, 250}},
-                {{675, 150}, {675, 200}, {675, 250}},
+                {{650, 150}, {650, 200}, {650, 250}},
                 {{100, 400}, {100, 450}, {100, 500}},
                 {{375, 400}, {375, 450}, {375, 500}}
         };
@@ -69,39 +78,36 @@ public class CollectMoneyPanel extends JPanel {
             addMoneyButtons[i][0].addActionListener(e -> {
                 moneyI.setStock(moneyI.getStock() + 5);
                 moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
+                updateCollectableMoney();
+                collectableMoneyLabel.setText("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");
             });
             addMoneyButtons[i][1].addActionListener(e -> {
                 moneyI.setStock(moneyI.getStock() + 10);
                 moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
+                updateCollectableMoney();
+                collectableMoneyLabel.setText("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");
             });
             addMoneyButtons[i][2].addActionListener(e -> {
                 moneyI.setStock(moneyI.getStock() + 50);
                 moneyLabels[finalI][1].setText(" X " + moneyI.getStock());
+                updateCollectableMoney();
+                collectableMoneyLabel.setText("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");
             });
             for (int j = 0; j < 3; j++) {
                 addMoneyButtons[i][j].setFont(textFont);
+                addMoneyButtons[i][j].setBackground(Color.WHITE);
                 addMoneyButtons[i][j].setBounds(moneyButtonLocations[i][j][0], moneyButtonLocations[i][j][1], 150, 50);
                 add(addMoneyButtons[i][j]);
             }
         }
 
-        AtomicInteger collectableMoney = new AtomicInteger();   //수금 가능한 금액
-        for (int i = 0; i < 5; i++) {
-            int stock = MoneyList.moneyList.get(i).getStock();
-            while (stock > 10) {
-                collectableMoney.addAndGet(MoneyList.moneyList.get(i).getPrice());
-                stock--;
-            }
-        }
-        JLabel collectableMoneyLabel = new JLabel("<html><div style='text-align: center;'>수금 가능 금액<br>" + collectableMoney + "원</div></html>");
-        collectableMoneyLabel.setFont(textFont);
-        collectableMoneyLabel.setBounds(650, 350, 500, 100);
-        add(collectableMoneyLabel);
+
 
         //수금 버튼 설정
         JButton collectButton = new JButton("수금");
         collectButton.setFont(textFont);
-        collectButton.setBounds(700, 450, 100, 100);
+        collectButton.setBackground(Color.WHITE);
+        collectButton.setBounds(675, 450, 100, 100);
         add(collectButton);
         collectButton.addActionListener(e -> {
             for (int i = 0; i < 5; i++) {
@@ -121,5 +127,14 @@ public class CollectMoneyPanel extends JPanel {
                 moneyLabels[i][1].setText(" X " + MoneyList.moneyList.get(i).getStock());
             }
         });
+    }
+    public void updateCollectableMoney() {
+        for (int i = 0; i < 5; i++) {
+            int stock = MoneyList.moneyList.get(i).getStock();
+            while (stock > 10) {
+                collectableMoney.addAndGet(MoneyList.moneyList.get(i).getPrice());
+                stock--;
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ import drink.*;
 
 //음료 정보 수정 화면 패널 생성 클래스
 public class ModifyDrinkPanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 35);
+    Font textFont = new Font("SansSerif", Font.BOLD, 25);
     JFileChooser fileChooser;
     File selectedFile;
 
@@ -33,9 +33,9 @@ public class ModifyDrinkPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             drinkImageLabel[i] = new JLabel(new ImageIcon(new ImageIcon(DrinkList.drinks.get(i).getImagePath()).getImage().getScaledInstance(100, 200, Image.SCALE_SMOOTH)));
             if (i < 3) {
-                drinkImageLabel[i].setBounds(50 + (i * 300), 40, 100, 200);
+                drinkImageLabel[i].setBounds(50 + (i * 280), 40, 100, 200);
             } else {
-                drinkImageLabel[i].setBounds(50 + ((i % 3) * 300), 300, 100, 200);
+                drinkImageLabel[i].setBounds(50 + ((i % 3) * 280), 300, 100, 200);
             }
             add(drinkImageLabel[i]);
         }
@@ -48,9 +48,9 @@ public class ModifyDrinkPanel extends JPanel {
                 drinkTextField[i][j] = new JTextField();
                 drinkTextField[i][j].setFont(textFont);
                 if (i < 3) {
-                    drinkTextField[i][j].setBounds(150 + (i * 300), 40 + (j * 75), 150, 50);
+                    drinkTextField[i][j].setBounds(150 + (i * 280), 40 + (j * 75), 150, 50);
                 } else {
-                    drinkTextField[i][j].setBounds(150 + ((i % 3) * 300), 300 + (j * 75), 150, 50);
+                    drinkTextField[i][j].setBounds(150 + ((i % 3) * 280), 300 + (j * 75), 150, 50);
                 }
                 add(drinkTextField[i][j]);
             }
@@ -64,10 +64,11 @@ public class ModifyDrinkPanel extends JPanel {
         for (int i = 0; i < DrinkList.drinks.size(); i++) {
             imageChangeButton[i] = new JButton("사진 변경");
             imageChangeButton[i].setFont(textFont);
+            imageChangeButton[i].setBackground(Color.WHITE);
             if (i < 3) {
-                imageChangeButton[i].setBounds(150 + (i * 300), 190, 150, 50);
+                imageChangeButton[i].setBounds(150 + (i * 280), 190, 150, 50);
             } else {
-                imageChangeButton[i].setBounds(150 + (i % 3) * 300, 450, 150, 50);
+                imageChangeButton[i].setBounds(150 + (i % 3) * 280, 450, 150, 50);
             }
             add(imageChangeButton[i]);
 
@@ -91,8 +92,9 @@ public class ModifyDrinkPanel extends JPanel {
 
         //저장 버튼 설정
         JButton saveButton = new JButton("저장");
-        saveButton.setBounds(725, 515, 150, 50);
+        saveButton.setBounds(425, 510, 150, 50);
         saveButton.setFont(textFont);
+        saveButton.setBackground(Color.WHITE);
         add(saveButton);
         //저장 버튼을 눌렀을 때 이벤트 설정(음료 리스트에 있는 음료 이름과 가격 변경)
         saveButton.addActionListener(e -> {

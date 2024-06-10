@@ -24,7 +24,7 @@ public class BuyPanel extends JPanel {
     private int[] insertMoneyCount;                  //입력된 각 화폐 개수
     static JLabel[] drinkImageLabel;                 //음료 이미지 라벨
     static JLabel[] priceLabels;                     //음료 가격 라벨
-    Font textFont = new Font("Arial", Font.BOLD, 40);           //텍스트 폰트
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);           //텍스트 폰트
 
     public BuyPanel() {
 
@@ -144,8 +144,9 @@ public class BuyPanel extends JPanel {
         insertMoneyCount = new int[MoneyList.moneyList.size()];
         for (int i = 0; i < MoneyList.moneyList.size(); i++) {
             moneyButton[i] = new JButton(MoneyList.moneyList.get(i).getName());
-            moneyButton[i].setBounds(50 + (i * 210), 840, 150, 100);
+            moneyButton[i].setBounds(50 + (i * 210), 840, 170, 100);
             moneyButton[i].setFont(textFont);
+            moneyButton[i].setBackground(Color.WHITE);
             add(moneyButton[i]);
             int finalI = i;
             if (finalI < 4) {
@@ -278,7 +279,7 @@ public class BuyPanel extends JPanel {
         }
     }
 
-    //파일에 매출 로그 추가(salesReport/2024년/06월/03일.txt 형식으로 연도별, 월별, 일별 매출 분리하여 저장)
+    //파일에 매출 로그 추가(salesReport/2024년/06월.txt 형식으로 연도별, 월별 매출 분리하여 저장)
     public static void addSalesLog(int index) {
         try {
             LocalDateTime today = LocalDateTime.now();
@@ -289,13 +290,7 @@ public class BuyPanel extends JPanel {
                 folder.mkdirs(); // 연도별 폴더 생성
             }
             formatter = DateTimeFormatter.ofPattern("MM");
-            folderPath += "/" + today.format(formatter) + "월";
-            folder = new File(folderPath);
-            if (!folder.exists()) {
-                folder.mkdirs(); // 월별 폴더 생성
-            }
-            formatter = DateTimeFormatter.ofPattern("dd");
-            String fileName = folderPath + "/" + today.format(formatter) + "일.txt";
+            String fileName = folderPath + "/" + today.format(formatter) + "월.txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                 formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
                 String formattedDate = formatter.format(today);

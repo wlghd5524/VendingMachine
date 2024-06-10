@@ -5,7 +5,7 @@ import java.awt.*;
 
 //관리자 메뉴 패널 생성 클래스
 public class AdminMenuPanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 40);
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);
     public AdminMenuPanel(AdminFrame adminFrame) {
         //관리자 메뉴 패널 설정
         setLayout(new GridLayout(2, 3, 50, 50));
@@ -17,6 +17,7 @@ public class AdminMenuPanel extends JPanel {
         //비밀번호 변경 메뉴 버튼
         JButton passwordChangeMenuButton = new JButton("<html><div style='text-align: center;'>비밀번호<br>변경</div></html>");
         passwordChangeMenuButton.setFont(textFont);
+        passwordChangeMenuButton.setBackground(Color.WHITE);
         add(passwordChangeMenuButton);
         passwordChangeMenuButton.addActionListener(e -> {
             //비밀번호 변경 화면으로 전환
@@ -29,6 +30,7 @@ public class AdminMenuPanel extends JPanel {
         //재고 보충 메뉴 버튼
         JButton addDrinkButton = new JButton("재고 보충");
         addDrinkButton.setFont(textFont);
+        addDrinkButton.setBackground(Color.WHITE);
         add(addDrinkButton);
         addDrinkButton.addActionListener(e -> {
             //재고 보충 화면으로 전환
@@ -41,6 +43,7 @@ public class AdminMenuPanel extends JPanel {
         //자판기 일별/월별 매출 산출 버튼
         JButton machineSalesReportButton = new JButton("<html><div style='text-align: center;'>자판기<br>일별/월별<br>매출 산출</div></html>");
         machineSalesReportButton.setFont(textFont);
+        machineSalesReportButton.setBackground(Color.WHITE);
         add(machineSalesReportButton);
         machineSalesReportButton.addActionListener(e -> {
             //자판기 매출 산출 화면으로 전환
@@ -53,6 +56,7 @@ public class AdminMenuPanel extends JPanel {
         //음료 일별/월별 매출 산출
         JButton drinkSalesReportButton = new JButton("<html><div style='text-align: center;'>음료<br>일별/월별<br>매출 산출</div></html>");
         drinkSalesReportButton.setFont(textFont);
+        drinkSalesReportButton.setBackground(Color.WHITE);
         add(drinkSalesReportButton);
         drinkSalesReportButton.addActionListener(e -> {
             //음료 매출 산출 화면으로 전환
@@ -65,6 +69,7 @@ public class AdminMenuPanel extends JPanel {
         //수금 버튼
         JButton collectMoneyButton = new JButton("수금");
         collectMoneyButton.setFont(textFont);
+        collectMoneyButton.setBackground(Color.WHITE);
         add(collectMoneyButton);
         collectMoneyButton.addActionListener(e -> {
             //수금 화면으로 전환
@@ -77,6 +82,7 @@ public class AdminMenuPanel extends JPanel {
         //음료 정보 변경 버튼
         JButton modifyDrinkButton = new JButton("<html><div style='text-align: center;'>음료<br>정보 변경</div></html>");
         modifyDrinkButton.setFont(textFont);
+        modifyDrinkButton.setBackground(Color.WHITE);
         add(modifyDrinkButton);
         modifyDrinkButton.addActionListener(e -> {
             //음료 정보 변경 화면으로 전환

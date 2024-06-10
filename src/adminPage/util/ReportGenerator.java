@@ -40,12 +40,7 @@ public class ReportGenerator {
                         if (!folder.exists()) {
                             folder.mkdirs(); // 연도별 폴더 생성
                         }
-                        folderPath += "/" + strMonth + "월";
-                        folder = new File(folderPath);
-                        if (!folder.exists()) {
-                            folder.mkdirs(); // 월별 폴더 생성
-                        }
-                        String fileName = folderPath + "/" + strDay + "일.txt";
+                        String fileName = folderPath += "/" + strMonth + "월.txt";
                         String log = "";
                         int sum = 0;
                         while (sum < secRand.nextInt(40000, 60000)) {
@@ -73,9 +68,5 @@ public class ReportGenerator {
         } finally {
 
         }
-    }
-
-    public static void main(String[] args) {
-        ReportGenerator reportGenerator = new ReportGenerator();
     }
 }

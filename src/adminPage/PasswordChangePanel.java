@@ -12,7 +12,7 @@ import java.io.IOException;
 
 //비밀번호 변경 화면 패널 생성 클래스
 public class PasswordChangePanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 40);
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);
 
     PasswordChangePanel() {
         //비밀번호 변경 화면
@@ -55,6 +55,7 @@ public class PasswordChangePanel extends JPanel {
         //비밀번호 변경 버튼 설정
         JButton passwordChangeButton = new JButton("비밀번호 변경");
         passwordChangeButton.setFont(textFont);
+        passwordChangeButton.setBackground(Color.WHITE);
         passwordChangeButton.setBounds(250, 400, 400, 100);
 
 

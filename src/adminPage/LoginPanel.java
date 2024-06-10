@@ -13,7 +13,7 @@ import java.io.IOException;
 
 //관리자 로그인 화면 패널 생성 클래스
 public class LoginPanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 40);
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);
 
     public LoginPanel() {
         setLayout(null);
@@ -52,6 +52,7 @@ public class LoginPanel extends JPanel {
         JButton adminCheckButton = new JButton("확인");
         adminCheckButton.setBounds(250, 300, 400, 100);
         adminCheckButton.setFont(textFont);
+        adminCheckButton.setBackground(Color.WHITE);
         //로그인 버튼을 눌렀을 때 이벤트 설정
         adminCheckButton.addActionListener(e -> {
             String insertedPassword = String.valueOf(passwordField.getPassword());

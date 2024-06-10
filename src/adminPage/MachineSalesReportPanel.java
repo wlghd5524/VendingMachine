@@ -15,8 +15,8 @@ import java.util.List;
 
 //자판기 매출 화면 패널 생성 클래스
 public class MachineSalesReportPanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 40);
-    Font comboBoxFont = new Font("Arial", Font.PLAIN, 20);
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);
+    Font comboBoxFont = new Font("SansSerif", Font.PLAIN, 25);
 
     MachineSalesReportPanel() {
         setBackground(new Color(252, 255, 216));
@@ -41,14 +41,11 @@ public class MachineSalesReportPanel extends JPanel {
         //매출 파일을 불러와서 스택에 push
         for (int i = 2020; i <= now.getYear(); i++) {
             for (int j = 1; j <= 12; j++) {
-                for (int k = 1; k <= 31; k++) {
-                    String strI = String.format("%02d", i);
-                    String strJ = String.format("%02d", j);
-                    String strK = String.format("%02d", k);
-                    File file = new File("salesReport/" + strI + "년/" + strJ + "월/" + strK + "일.txt");
-                    if (file.exists()) {
-                        fileStack.push(file);
-                    }
+                String strI = String.format("%02d", i);
+                String strJ = String.format("%02d", j);
+                File file = new File("salesReport/" + strI + "년/" + strJ + "월.txt");
+                if (file.exists()) {
+                    fileStack.push(file);
                 }
             }
         }
@@ -86,9 +83,9 @@ public class MachineSalesReportPanel extends JPanel {
         yearLabel.setFont(textFont);
         monthLabel.setFont(textFont);
         dayLabel.setFont(textFont);
-        yearLabel.setBounds(200, 100, 100, 50);
-        monthLabel.setBounds(400, 100, 100, 50);
-        dayLabel.setBounds(600, 100, 100, 50);
+        yearLabel.setBounds(150, 100, 100, 50);
+        monthLabel.setBounds(350, 100, 100, 50);
+        dayLabel.setBounds(550, 100, 100, 50);
 
         //연별 매출 라벨
         JLabel yearResultLabel = new JLabel();
@@ -124,9 +121,12 @@ public class MachineSalesReportPanel extends JPanel {
         yearComboBox.setFont(comboBoxFont);
         monthComboBox.setFont(comboBoxFont);
         dayComboBox.setFont(comboBoxFont);
-        yearComboBox.setBounds(50, 100, 150, 50);
-        monthComboBox.setBounds(250, 100, 150, 50);
-        dayComboBox.setBounds(450, 100, 150, 50);
+        yearComboBox.setBackground(Color.WHITE);
+        monthComboBox.setBackground(Color.WHITE);
+        dayComboBox.setBackground(Color.WHITE);
+        yearComboBox.setBounds(50, 100, 100, 50);
+        monthComboBox.setBounds(250, 100, 100, 50);
+        dayComboBox.setBounds(450, 100, 100, 50);
         LocalDate localDate = LocalDate.now();
         yearComboBox.setSelectedItem(String.valueOf(localDate.getYear()));
         monthComboBox.setSelectedItem(String.valueOf(localDate.getMonthValue()));
@@ -135,7 +135,8 @@ public class MachineSalesReportPanel extends JPanel {
         //날짜 선택 버튼
         JButton selectButton = new JButton("선택");
         selectButton.setFont(textFont);
-        selectButton.setBounds(700, 100, 100, 50);
+        selectButton.setBackground(Color.WHITE);
+        selectButton.setBounds(680, 100, 120, 50);
         //날짜 선택 버튼을 눌렀을 때 이벤트(선택된 년 월 일 콤보박스 아이템에 해당하는 매출 출력)
         selectButton.addActionListener(e -> {
             int year = Integer.parseInt((String) yearComboBox.getSelectedItem());

@@ -1,12 +1,12 @@
 package adminPage;
 
+import buyPage.BuyPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import buyPage.BuyPanel;
 
 //관리자 페이지 프레임 생성 클래스
 public class AdminFrame extends JFrame {

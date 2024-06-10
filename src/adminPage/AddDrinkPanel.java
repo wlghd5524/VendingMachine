@@ -9,7 +9,7 @@ import drink.*;
 
 //음료 재고 보충 화면 패널 생성 클래스
 public class AddDrinkPanel extends JPanel {
-    Font textFont = new Font("Arial", Font.BOLD, 40);
+    Font textFont = new Font("SansSerif", Font.BOLD, 40);
 
     AddDrinkPanel() {
         //재고 보충 화면
@@ -55,6 +55,7 @@ public class AddDrinkPanel extends JPanel {
                     drinkStockButton[i][j].setBounds(150 + (i % 3 * 300), 350 + (j * 55), 125, 50);
                 }
                 drinkStockButton[i][j].setFont(textFont);
+                drinkStockButton[i][j].setBackground(Color.WHITE);
                 add(drinkStockButton[i][j]);
                 //각 버튼을 눌렀을 때 이벤트 설정
                 drinkStockButton[i][j].addActionListener(e -> {
